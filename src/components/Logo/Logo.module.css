@@ -1,0 +1,9 @@
+.Logo {
+    height: 5rem;
+    flex: 1;
+}
+
+.Logo img {
+    display: inline-block;
+    height: 5rem;
+}

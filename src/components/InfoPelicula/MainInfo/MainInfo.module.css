@@ -1,0 +1,42 @@
+.InfoContainer {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+}
+@media only screen and (max-width: 40.625em) {
+    .InfoContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.Info {
+    flex: 1;
+    margin-left: 5rem;
+}
+@media only screen and (max-width: 40.625em) {
+    .Info {
+        margin-top: 2.5rem;
+        margin-left: 0;
+    }
+}
+
+.Details {
+    margin-top: 1.5rem;
+}
+
+.Score {
+    display: inline-flex;
+    align-items: center;
+    background-color: rgba(252,191,30,.8);
+    color: #fff;
+    padding: 1.2rem 2rem;
+    border-radius: 1rem;
+    margin: 1rem 0;
+}
+.Score img {
+    width: auto;
+    height: 2rem;
+    display: inline-block;
+    margin-right: 1rem;
+}

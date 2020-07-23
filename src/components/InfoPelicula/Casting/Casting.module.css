@@ -1,0 +1,14 @@
+.Casting {
+    overflow: hidden;
+}
+
+.CastingList {
+    overflow: auto;
+    list-style: none;
+    display: flex;
+}
+
+.Casting li {
+    margin: 1rem .5rem;
+    min-width: 18rem;
+}
