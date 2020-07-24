@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import notFound from "../../../assets/image_not_found.png";
+import imgNotFound from "../../../assets/image_not_found.png";
 
 const useStyles = makeStyles({
   cardStyles: (props) => {
@@ -46,7 +46,7 @@ const useStyles = makeStyles({
 
 const Pelicula = (props) => {
   const classes = useStyles(props);
-  const mediaImage = (props.posterUrl) ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${props.posterUrl}` : notFound;
+  const mediaImage = (props.posterUrl) ? `https://image.tmdb.org/t/p/w300_and_h450_bestv2/${props.posterUrl}` : imgNotFound;
 
   return (
     <Link to={`/pelicula/${props.peliculaId}`} style={{textDecoration: "none"}}>

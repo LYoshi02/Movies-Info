@@ -29,7 +29,7 @@ const useStyles = makeStyles({
   },
   mediaStyles: (props) => {
     return {
-      width: "10rem",
+      minWidth: "10rem",
       height: "15rem",
       borderRadius: ".5rem",
     };
@@ -43,7 +43,7 @@ const useStyles = makeStyles({
   typographyStyles: (props) => {
     return {
       textTransform: "uppercase",
-      fontWeight: "bold",
+      fontWeight: "bold"
     };
   },
   dividerStyles: {
@@ -58,7 +58,7 @@ const Resultado = (props) => {
 
   return (
     <Link to={`/pelicula/${props.peliculaId}`} style={{textDecoration: "none"}}>
-      <Card className={classes.cardStyles}>
+      <Card className={classes.cardStyles} onClick={props.clicked}>
         <CardMedia
           image={mediaImage}
           title={props.titulo}
@@ -67,7 +67,7 @@ const Resultado = (props) => {
         <CardContent className={classes.cardContentStyles}>
           <Typography
             component="h3"
-            variant="h5"
+            variant="h6"
             className={classes.typographyStyles}
             color="textSecondary"
           >

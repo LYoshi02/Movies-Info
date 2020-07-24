@@ -6,25 +6,25 @@ import { makeStyles } from "@material-ui/styles";
 import Resultados from "../Resultados/Resultados";
 
 const useStyles = makeStyles({
-    boxStyles: {
-      position: "absolute",
-      width: "100%",
-      zIndex: "100",
-    },
-    paperStyles: {
-      padding: ".5rem 1rem",
-      borderRadius: "0",
-      backgroundColor: "#FFF"
-    },
-    inputStyles: {
-      marginLeft: "1rem",
-      color: "var(--color-gris-oscuro)",
-      width: "80%"
-    },
-  });
+  boxStyles: {
+    position: "absolute",
+    width: "100%",
+    zIndex: "100",
+  },
+  paperStyles: {
+    padding: ".5rem 1rem",
+    borderRadius: "0",
+    backgroundColor: "#FFF",
+  },
+  inputStyles: {
+    marginLeft: "1rem",
+    color: "var(--color-gris-oscuro)",
+    width: "80%",
+  },
+});
 
 const Busqueda = (props) => {
-    const classes = useStyles();
+  const classes = useStyles();
 
   return (
     <Box className={classes.boxStyles}>
@@ -37,11 +37,17 @@ const Busqueda = (props) => {
           placeholder="Buscar una película..."
           value={props.searchValue}
           onChange={props.searchChanged}
+          inputRef={props.inputRef}
           autoFocus
         />
       </Paper>
 
-      <Resultados results={props.searchResults} />
+      <Resultados
+        results={props.searchResults}
+        reqLoading={props.reqLoading}
+        searchValue={props.searchValue}
+        movieClicked={props.closeSearch}
+      />
     </Box>
   );
 };

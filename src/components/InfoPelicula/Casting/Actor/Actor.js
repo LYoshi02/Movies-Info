@@ -2,6 +2,8 @@ import React from "react";
 import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
+import imgNotFound from "../../../../assets/image_not_found.png";
+
 const useStyles = makeStyles({
     nameTypographyStyles: {
       fontWeight: "bold",
@@ -11,6 +13,9 @@ const useStyles = makeStyles({
     },
     cardContentStyles: {
         padding: "1rem"
+    },
+    cardMediaStyles: {
+      maxHeight: "27rem"
     }
   });
 
@@ -22,7 +27,8 @@ const Actor = (props) => {
     <Card component="li">
       <CardMedia
         component="img"
-        src={`https://image.tmdb.org/t/p/w185/${props.imgUrl}`}
+        src={(props.imgUrl) ? `https://image.tmdb.org/t/p/w185/${props.imgUrl}` : imgNotFound}
+        className={classes.cardMediaStyles}
       />
       <CardContent className={classes.cardContentStyles}>
         <Typography className={classes.nameTypographyStyles} color="textSecondary">{props.name}</Typography>

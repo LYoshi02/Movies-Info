@@ -7,12 +7,13 @@ import thunk from 'redux-thunk';
 import './index.css';
 import App from './App';
 import inicioReducer from "./store/reducers/inicio";
+import layoutReducer from "./store/reducers/layout";
 import * as serviceWorker from './serviceWorker';
 
-const composeEnhancers = process.env.NODE_ENV === "development" ? 
-  window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose;
+const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;
 const rootReducer = combineReducers({
-  inicio: inicioReducer
+  inicio: inicioReducer,
+  layout: layoutReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));

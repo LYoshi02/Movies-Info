@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState, useEffect , useRef} from "react";
+import * as actions from "../../store/actions/index";
 import { Grid, createMuiTheme, ThemeProvider } from "@material-ui/core";
 
 import Navigation from "../../components/Navigation/Navigation";
 import { grey, indigo } from "@material-ui/core/colors";
+import { connect } from "react-redux";
 
 const theme = createMuiTheme({
   palette: {
@@ -15,32 +16,39 @@ const theme = createMuiTheme({
     },
   },
   typography: {
-    htmlFontSize: 10,
-  },
+    htmlFontSize: 10
+  }
 });
 
 const Layout = (props) => {
   const [showSearchBar, setShowSearchBar] = useState(false);
   const [searchInputValue, setSearchInputValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
+  const searchInputRef = useRef();
 
+  const { onSearchMovie, onRestartSearchValues } = props;
   useEffect(() => {
     if (searchInputValue.trim() !== "") {
-      axios
-        .get(
-          `https://api.themoviedb.org/3/search/movie?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&query=${searchInputValue}&page=1&include_adult=false`
-        )
-        .then((res) => {
-          setSearchResults(res.data.results);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      const timer = setTimeout(() => {
+        if(searchInputValue === searchInputRef.current.value) {
+          onSearchMovie(searchInputValue);
+        }
+
+        return () => {
+          clearTimeout(timer);
+        }
+      }, 500)
+     
+    } else {
+      onRestartSearchValues();
     }
-  }, [searchInputValue]);
+  }, [searchInputValue, onSearchMovie, onRestartSearchValues]);
 
   const toggleSearchBarHandler = () => {
     setShowSearchBar((prevState) => !prevState);
+    if(!showSearchBar) {
+      setSearchInputValue("");
+      onRestartSearchValues();
+    }
   };
 
   const searchInputHandler = (event) => {
@@ -53,10 +61,12 @@ const Layout = (props) => {
         <Grid item>
           <Navigation
             showSearch={showSearchBar}
+            toggleSearchBar={toggleSearchBarHandler}
             searchInputValue={searchInputValue}
             searchInputChanged={searchInputHandler}
-            searchResultsData={searchResults}
-            toggleSearchBar={toggleSearchBarHandler}
+            searchResultsData={props.searchResults}
+            reqLoading={props.reqLoading}
+            searchInputRef={searchInputRef}
           />
         </Grid>
 
@@ -66,4 +76,18 @@ const Layout = (props) => {
   );
 };
 
-export default Layout;
+const mapStateToProps = (state) => {
+  return {
+    searchResults: state.layout.searchResults,
+    reqLoading: state.layout.reqLoading
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onSearchMovie: (searchValue) => dispatch(actions.searchMovie(searchValue)),
+    onRestartSearchValues: () => dispatch(actions.restartSearchValues())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

@@ -15,6 +15,8 @@ const Navigation = (props) => {
         searchValue={props.searchInputValue}
         searchChanged={props.searchInputChanged}
         searchResults={props.searchResultsData}
+        reqLoading={props.reqLoading}
+        inputRef={props.searchInputRef}
       />
     );
   }

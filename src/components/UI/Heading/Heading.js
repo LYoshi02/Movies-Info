@@ -52,7 +52,7 @@ const Heading = (props) => {
       headingElement = (
         <Typography
           component="h2"
-          variant="h3"
+          variant="h4"
           className={classes.headingTitleStyles}
         >
           {props.children}
