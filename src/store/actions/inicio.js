@@ -1,12 +1,12 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 
-export const initMovies = () => {
+export const initMovies = (startPage) => {
   return (dispatch) => {
     axios
       .all([
         axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1`
+          `https://api.themoviedb.org/3/movie/popular?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=${startPage}`
         ),
         axios.get(
           "https://api.themoviedb.org/3/movie/upcoming?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1"
@@ -19,7 +19,7 @@ export const initMovies = () => {
             releases: releasesRes.data.results,
             totalPages: moviesRes.data.total_pages,
           };
-          dispatch(setMovieData(movieData));
+          dispatch(setMovieData(movieData, startPage));
         })
       )
       .catch((error) => {
@@ -28,10 +28,11 @@ export const initMovies = () => {
   };
 };
 
-export const setMovieData = (movieData) => {
+export const setMovieData = (movieData, startPage) => {
   return {
     type: actionTypes.SET_MOVIE_DATA,
     movieData,
+    startPage
   };
 };
 

@@ -21,11 +21,26 @@ const MainInfo = (props) => {
     genres
   } = props.info;
 
-  const generos = genres.map(gen => gen.name).join(" - ");
-  const releaseYear = new Date(release_date).getFullYear();
+  const generos = (genres) ? genres.map(gen => gen.name).join(" - ") : "No disponible";
+  const releaseYear = (release_date === "") ? "" : new Date(release_date).getFullYear();
 
   const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const longReleaseDate = new Date(release_date).toLocaleDateString("es-ES", options);
+  const longReleaseDate = (release_date === "") ? "No disponible" : new Date(release_date).toLocaleDateString("es-ES", options);
+
+  let runtimeString = "";
+  if(runtime > 0) {
+    const runtimeHs = Math.trunc(runtime / 60);
+    const runtimeMins = runtime - (runtimeHs * 60);
+
+    if(runtimeHs > 0) {
+      runtimeString = (runtimeHs > 1) ? `${runtimeHs} horas ` : `${runtimeHs} hora `;
+    }
+    if(runtimeMins > 0) {
+      runtimeString += (runtimeMins > 1) ? `${runtimeMins} minutos` : `${runtimeMins} minuto`;
+    }
+  } else {
+    runtimeString = "No disponible";
+  }
 
   return (
     <div className={classes.InfoContainer}>
@@ -43,13 +58,13 @@ const MainInfo = (props) => {
           <span>{`${vote_average}/10`}</span>
         </div>
 
-        <Typography component="p" style={{ fontSize: "1.6rem", color: "#fff" }}>
+        <Typography component="p" color="textPrimary">
           {overview}
         </Typography>
 
         <div className={classes.Details}>
           <Detail name="fecha de lanzamiento">{longReleaseDate}</Detail>
-          <Detail name="duración">{runtime} min</Detail>
+          <Detail name="duración">{runtimeString}</Detail>
           <Detail name="género(s)">{generos}</Detail>
         </div>
       </div>

@@ -37,7 +37,7 @@ const Resultados = (props) => {
   //   }
   // }
 
-  let results;
+  let results = null;
   if(props.reqLoading) {
     results = <Loading />;
   } else {

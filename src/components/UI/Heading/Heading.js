@@ -57,7 +57,7 @@ const Heading = (props) => {
         >
           {props.children}
           <Typography component="span" variant="h5">
-            {` (${props.releaseYear})`}
+            {(props.releaseYear === "") ? "" : ` (${props.releaseYear})`}
           </Typography>
         </Typography>
       );

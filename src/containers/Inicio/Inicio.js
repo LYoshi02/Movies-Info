@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import { Grid } from "@material-ui/core";
@@ -11,8 +11,12 @@ const Inicio = (props) => {
   const { onInitMovies, onChangePage } = props;
 
   useEffect(() => {
-    onInitMovies();
-  }, [onInitMovies]);
+    let startPage = 1;
+    if(props.match.params.page) {
+      startPage = props.match.params.page;
+    }
+    onInitMovies(startPage);
+  }, [onInitMovies, props.match.params.page]);
 
   useEffect(() => {
     if(props.match.params.page) {
@@ -22,7 +26,7 @@ const Inicio = (props) => {
         props.history.replace("/page/1");
       }
     }
-  }, [props.match.params, onChangePage]);
+  }, [props.match.params, onChangePage, props.match.params.page, props.history, props.totalPages]);
 
   return (
     <React.Fragment>
@@ -53,7 +57,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onInitMovies: () => dispatch(actions.initMovies()),
+    onInitMovies: (page) => dispatch(actions.initMovies(page)),
     onChangePage: (page) => dispatch(actions.changePage(page))
   };
 };

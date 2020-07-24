@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { HashLink as Link } from "react-router-hash-link";
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
@@ -13,7 +13,7 @@ const useStyles = makeStyles({
 const Pagina = (props) => {
   const classes = useStyles();
   return (
-    <Link to={`/page/${props.num}`}>
+    <Link to={`/page/${props.num}#movie-start`} smooth>
       <Button
         className={classes.buttonStyles}
         color="secondary"

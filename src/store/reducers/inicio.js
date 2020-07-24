@@ -13,7 +13,7 @@ const setMovieData = (state, action) => {
         movies: action.movieData.movies,
         releases: action.movieData.releases,
         totalPages: action.movieData.totalPages,
-        currentPage: 1
+        currentPage: action.startPage
     });
 }
 

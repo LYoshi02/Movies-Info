@@ -21,7 +21,7 @@ const useStyles = makeStyles({
 
   //TODO: poner una imagen por default en caso de que la del actor sea null
 const Actor = (props) => {
-    const classes = useStyles(props);
+  const classes = useStyles(props);
 
   return (
     <Card component="li">
