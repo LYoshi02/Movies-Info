@@ -13,5 +13,5 @@
 }
 
 .Cast {
-    width: calc(100vw - 18px);
+    width: calc(100vw - 18px); /* To take on account the scrollbar width when seting vw */
 }

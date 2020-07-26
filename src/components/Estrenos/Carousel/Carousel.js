@@ -8,11 +8,11 @@ const flickityOptions = {
   freeScroll: true,
   contain: true,
   pageDots: false,
-  autoPlay: true,
+  autoPlay: true
 };
 
 const Carousel = (props) => (
-  <Flickity options={flickityOptions}>{props.children}</Flickity>
+  <Flickity options={flickityOptions} static>{props.children}</Flickity>
 );
 
 export default Carousel;
