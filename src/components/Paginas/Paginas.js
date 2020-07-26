@@ -2,13 +2,23 @@ import React from "react";
 import { withRouter } from "react-router-dom";
 import { HashLink as Link } from "react-router-hash-link";
 import { Box } from "@material-ui/core";
-import IconButton from "@material-ui/core/IconButton";
-import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
-import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
+import Pagination from "@material-ui/lab/Pagination";
+import PaginationItem from '@material-ui/lab/PaginationItem';
+// import IconButton from "@material-ui/core/IconButton";
+// import ArrowBackIosRoundedIcon from "@material-ui/icons/ArrowBackIosRounded";
+// import ArrowForwardIosRoundedIcon from "@material-ui/icons/ArrowForwardIosRounded";
 
 import Pagina from "./Pagina/Pagina";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles({
+  ul: {
+    justifyContent: "center",
+  },
+});
 
 const Paginas = (props) => {
+  const classes = useStyles();
   const paginaActual = parseInt(props.paginaActual);
   const totalPaginas = parseInt(props.totalPaginas);
 
@@ -22,9 +32,7 @@ const Paginas = (props) => {
   let botones = [];
   for (let i = 0; i < cantBotones; i++) {
     const num =
-      paginaActual < limiteBotones
-        ? paginaActual + i
-        : limiteBotones + i;
+      paginaActual < limiteBotones ? paginaActual + i : limiteBotones + i;
     botones.push(
       <Pagina
         key={num}
@@ -35,25 +43,21 @@ const Paginas = (props) => {
   }
 
   return (
-    <Box mt="5rem" mb="3rem" textAlign="center">
-      <Link to={(paginaActual === 1) ? "#" : `/page/${paginaActual - 1}#movie-start`} smooth>
-        <IconButton
-          color="secondary"
-          disabled={paginaActual === 1}
-        >
-          <ArrowBackIosRoundedIcon fontSize="small" />
-        </IconButton>
-      </Link>
-      {botones}
-
-      <Link to={(paginaActual === totalPaginas) ? "#" : `/page/${paginaActual + 1}#movie-start`} smooth>
-        <IconButton
-          color="secondary"
-          disabled={paginaActual === totalPaginas}
-        >
-          <ArrowForwardIosRoundedIcon fontSize="small" />
-        </IconButton>
-      </Link>
+    <Box mt="5rem" mb="3rem">
+      <Pagination
+        page={props.paginaActual}
+        count={props.totalPaginas}
+        color="secondary"
+        shape="rounded"
+        classes={{ ul: classes.ul }}
+        renderItem={(item) => (
+            <PaginationItem 
+              component={Link}
+              to={`/page/${item.page}#movie-start`}
+              {...item}
+            />
+        )}
+      />
     </Box>
   );
 };

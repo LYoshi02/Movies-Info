@@ -13,7 +13,7 @@ const Inicio = (props) => {
   useEffect(() => {
     let startPage = 1;
     if(props.match.params.page) {
-      startPage = props.match.params.page;
+      startPage = parseInt(props.match.params.page);
     }
     onInitMovies(startPage);
   }, [onInitMovies, props.match.params.page]);
@@ -21,7 +21,7 @@ const Inicio = (props) => {
   useEffect(() => {
     if(props.match.params.page) {
       if(props.match.params.page >= 1 && props.match.params.page <= props.totalPages) {
-        onChangePage(props.match.params.page);
+        onChangePage(parseInt(props.match.params.page));
       } else {
         props.history.replace("/page/1");
       }
