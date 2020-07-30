@@ -4,9 +4,10 @@ import axios from "axios";
 import Casting from "../../components/InfoPelicula/Casting/Casting";
 import Heading from "../../components/UI/Heading/Heading";
 import MainInfo from "../../components/InfoPelicula/MainInfo/MainInfo";
-import Reviews from "../../components/InfoPelicula/Reviews/Reviews";
+import Reviews from "../../components/Reviews/Reviews";
 
 import classes from "./InfoPelicula.module.css";
+import { Button } from "@material-ui/core";
 
 const InfoPelicula = (props) => {
   const { id } = props.match.params;
@@ -54,6 +55,7 @@ const InfoPelicula = (props) => {
           <div>
               <Heading type="info-tertiary">Reseñas:</Heading>
               <Reviews />
+              <Button color="secondary" onClick={() => props.history.push(`/pelicula/reviews/${id}`)}>Ver todas las Reseñas &rarr;</Button>
           </div>
       </div>
     );

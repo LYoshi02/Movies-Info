@@ -5,9 +5,12 @@ import ThumbUpRoundedIcon from '@material-ui/icons/ThumbUpRounded';
 import ThumbDownRoundedIcon from '@material-ui/icons/ThumbDownRounded';
 import { makeStyles } from '@material-ui/styles';
 
+import Subheader from "./Subheader/Subheader";
+
 const useStyles = makeStyles({
     cardStyles: {
         color: "#000",
+        marginBottom: "2rem"
     },
     cardContentStyles: {
         padding: "5px 16px"
@@ -29,7 +32,7 @@ const Review = () => {
                     </Avatar>
                 }
                 title="Usuario 1"
-                subheader="26 de Julio 2020"
+                subheader={<Subheader stars={2} postDate="30 de Julio 2020" />}
                 classes={{title: classes.cardHeaderTitleStyles}}
             />
             <CardContent className={classes.cardContentStyles}>

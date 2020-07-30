@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 import Inicio from "./containers/Inicio/Inicio";
 import InfoPelicula from "./containers/InfoPelicula/InfoPelicula";
 import Layout from "./hoc/Layout/Layout";
+import MovieReviews from "./containers/MovieReviews/MovieReviews";
 
 // API key: 9dbf064d
 // Url: http://www.omdbapi.com/?i=tt3896198&apikey=9dbf064d
@@ -18,6 +19,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Inicio} />
           <Route path="/page/:page" component={Inicio} />
+          <Route path="/pelicula/reviews/:id" component={MovieReviews} />
           <Route path="/pelicula/:id" component={InfoPelicula} />
           <Redirect to="/" />
         </Switch>
