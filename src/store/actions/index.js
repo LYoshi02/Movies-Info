@@ -7,3 +7,7 @@ export {
     searchMovie,
     restartSearchValues
 } from "./layout";
+
+export {
+    postReview
+} from "./movieReviews"
