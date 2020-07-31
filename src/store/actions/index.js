@@ -9,5 +9,9 @@ export {
 } from "./layout";
 
 export {
+    fetchMovieInfo
+} from "./infoPelicula";
+
+export {
     postReview
-} from "./movieReviews"
+} from "./movieReviews";

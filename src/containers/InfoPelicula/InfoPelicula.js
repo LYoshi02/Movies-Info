@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import * as actions from "../../store/actions/index";
 
 import Casting from "../../components/InfoPelicula/Casting/Casting";
 import Heading from "../../components/UI/Heading/Heading";
@@ -8,48 +9,29 @@ import Reviews from "../../components/Reviews/Reviews";
 
 import classes from "./InfoPelicula.module.css";
 import { Button } from "@material-ui/core";
+import { connect } from "react-redux";
 
 const InfoPelicula = (props) => {
   const { id } = props.match.params;
+  const { onFetchMovieInfo, info, cast } = props;
   const [peliculaInfo, setPeliculaInfo] = useState(null);
   const [peliculaCast, setPeliculaCast] = useState(null);
 
   useEffect(() => {
-    axios
-      .get(
-        `https://api.themoviedb.org/3/movie/${id}?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es`
-      )
-      .then((res) => {
-        setPeliculaInfo(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-      axios
-        .get(
-          `https://api.themoviedb.org/3/movie/${id}/credits?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es`
-        )
-        .then((res) => {
-          const cast = res.data.cast.splice(0,8);
-          setPeliculaCast(cast);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }, [id]);
+    onFetchMovieInfo(id);
+  }, [id, onFetchMovieInfo]);
 
   let component = <p>Cargando</p>;
-  if (peliculaInfo && peliculaCast) {
+  if (info && cast) {
     component = (
       <div className={classes.InfoPelicula}>
           <MainInfo 
-            info={peliculaInfo}
+            info={info}
           />
 
           <div className={classes.Cast}>
               <Heading type="info-tertiary">Reparto:</Heading>
-              <Casting cast={peliculaCast} />
+              <Casting cast={cast} />
           </div>
 
           <div>
@@ -64,4 +46,17 @@ const InfoPelicula = (props) => {
   return component;
 };
 
-export default InfoPelicula;
+const mapStateToProps = (state) => {
+  return {
+    info: state.infoPelicula.info,
+    cast: state.infoPelicula.cast
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onFetchMovieInfo: (movieId) => dispatch(actions.fetchMovieInfo(movieId))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(InfoPelicula);
