@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import * as actions from "../../store/actions/index";
 
@@ -14,8 +14,13 @@ import { connect } from "react-redux";
 const InfoPelicula = (props) => {
   const { id } = props.match.params;
   const { onFetchMovieInfo, info, cast } = props;
-  const [peliculaInfo, setPeliculaInfo] = useState(null);
-  const [peliculaCast, setPeliculaCast] = useState(null);
+
+  useEffect(() => {
+    axios.get(
+      `https://movies-info-f83aa.firebaseio.com/reviews.json`
+    )
+    .then(res => console.log(res))
+  }, []);
 
   useEffect(() => {
     onFetchMovieInfo(id);
@@ -25,20 +30,23 @@ const InfoPelicula = (props) => {
   if (info && cast) {
     component = (
       <div className={classes.InfoPelicula}>
-          <MainInfo 
-            info={info}
-          />
+        <MainInfo info={info} />
 
-          <div className={classes.Cast}>
-              <Heading type="info-tertiary">Reparto:</Heading>
-              <Casting cast={cast} />
-          </div>
+        <div className={classes.Cast}>
+          <Heading type="info-tertiary">Reparto:</Heading>
+          <Casting cast={cast} />
+        </div>
 
-          <div>
-              <Heading type="info-tertiary">Reseñas:</Heading>
-              <Reviews />
-              <Button color="secondary" onClick={() => props.history.push(`/pelicula/reviews/${id}`)}>Ver todas las Reseñas &rarr;</Button>
-          </div>
+        <div>
+          <Heading type="info-tertiary">Reseñas:</Heading>
+          <Reviews reviews={props.reviews} />
+          <Button
+            color="secondary"
+            onClick={() => props.history.push(`/pelicula/reviews/${id}`)}
+          >
+            Ver todas las Reseñas &rarr;
+          </Button>
+        </div>
       </div>
     );
   }
@@ -49,13 +57,14 @@ const InfoPelicula = (props) => {
 const mapStateToProps = (state) => {
   return {
     info: state.infoPelicula.info,
-    cast: state.infoPelicula.cast
+    cast: state.infoPelicula.cast,
+    reviews: state.infoPelicula.reviews,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchMovieInfo: (movieId) => dispatch(actions.fetchMovieInfo(movieId))
+    onFetchMovieInfo: (movieId) => dispatch(actions.fetchMovieInfo(movieId)),
   };
 };
 

@@ -17,10 +17,10 @@ const MovieReviews = (props) => {
             postDate: new Date().toLocaleDateString("es-ES", options),
             review: userReviewInput.trim(),
             stars: userStars,
-            movieId: props.match.params.id
+            likes: 0
         }
 
-        props.onPostReview(newReview);
+        props.onPostReview(newReview, props.match.params.id);
     }
 
     return (  
@@ -54,7 +54,7 @@ const MovieReviews = (props) => {
   
   const mapDispatchToProps = (dispatch) => {
     return {
-      onPostReview: (review) => dispatch(actions.postReview(review))
+      onPostReview: (review, movieId) => dispatch(actions.postReview(review, movieId))
     };
   };
  

@@ -3,13 +3,15 @@ import { updateObject } from "../../shared/utility";
 
 const initialState = {
     info: null,
-    cast: null
+    cast: null,
+    reviews: null
 }
 
 const setMovieInfo = (state, action) => {
     return updateObject(state, {
         info: action.info,
-        cast: action.cast
+        cast: action.cast,
+        reviews: action.reviews
     });
 }
 
