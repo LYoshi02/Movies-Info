@@ -9,22 +9,24 @@ import App from './App';
 import inicioReducer from "./store/reducers/inicio";
 import layoutReducer from "./store/reducers/layout";
 import infoPeliculaReducer from "./store/reducers/infoPelicula";
+import movieReviewsReducer from "./store/reducers/movieReviews";
 import * as serviceWorker from './serviceWorker';
 
 const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;
 const rootReducer = combineReducers({
   inicio: inicioReducer,
   layout: layoutReducer,
-  infoPelicula: infoPeliculaReducer
+  infoPelicula: infoPeliculaReducer,
+  movieReviews: movieReviewsReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
 ReactDOM.render(
   <Provider store={store}>
-    <React.StrictMode>
+    <React.Fragment>
       <App />
-    </React.StrictMode>
+    </React.Fragment>
   </Provider>,
   document.getElementById('root')
 );

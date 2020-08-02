@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import * as actions from "../../store/actions/index";
 
 import Casting from "../../components/InfoPelicula/Casting/Casting";
@@ -14,13 +13,6 @@ import { connect } from "react-redux";
 const InfoPelicula = (props) => {
   const { id } = props.match.params;
   const { onFetchMovieInfo, info, cast } = props;
-
-  useEffect(() => {
-    axios.get(
-      `https://movies-info-f83aa.firebaseio.com/reviews.json`
-    )
-    .then(res => console.log(res))
-  }, []);
 
   useEffect(() => {
     onFetchMovieInfo(id);
@@ -39,7 +31,7 @@ const InfoPelicula = (props) => {
 
         <div>
           <Heading type="info-tertiary">Reseñas:</Heading>
-          <Reviews reviews={props.reviews} />
+          <Reviews reviews={props.reviews} reqFinished={props.reqFinished} />
           <Button
             color="secondary"
             onClick={() => props.history.push(`/pelicula/reviews/${id}`)}
@@ -59,6 +51,7 @@ const mapStateToProps = (state) => {
     info: state.infoPelicula.info,
     cast: state.infoPelicula.cast,
     reviews: state.infoPelicula.reviews,
+    reqFinished: state.infoPelicula.reqFinished
   };
 };
 

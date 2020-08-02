@@ -13,5 +13,5 @@ export {
 } from "./infoPelicula";
 
 export {
-    postReview
+    fetchMovieReviews
 } from "./movieReviews";

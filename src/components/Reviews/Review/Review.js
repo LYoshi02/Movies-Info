@@ -42,7 +42,7 @@ const Review = (props) => {
             </CardContent>
             <CardActions>
                 <Box display="flex" alignItems="center" marginRight="1rem">
-                    <IconButton color="secondary">
+                    <IconButton>
                         <ThumbUpRoundedIcon />
                     </IconButton>
                     <Typography component="span">{props.likes}</Typography>

@@ -3,6 +3,7 @@ import * as actionTypes from "./actionTypes";
 
 export const fetchMovieInfo = (movieId) => {
   return (dispatch) => {
+    dispatch(fetchInfoInit);
     axios
       .all([
         axios.get(
@@ -23,7 +24,7 @@ export const fetchMovieInfo = (movieId) => {
             cast: castRes.data.cast.splice(0, 8),
             reviews: reviewsRes.data,
           };
-          dispatch(setMovieInfo(movieInfo));
+          dispatch(fetchInfoSuccess(movieInfo));
         })
       )
       .catch((error) => {
@@ -32,9 +33,15 @@ export const fetchMovieInfo = (movieId) => {
   };
 };
 
-export const setMovieInfo = (movieInfo) => {
+export const fetchInfoInit = () => {
   return {
-    type: actionTypes.SET_MOVIE_INFO,
+    type: actionTypes.FETCH_INFO_INIT
+  }
+}
+
+export const fetchInfoSuccess = (movieInfo) => {
+  return {
+    type: actionTypes.FETCH_INFO_SUCCESS,
     info: movieInfo.info,
     cast: movieInfo.cast,
     reviews: movieInfo.reviews
