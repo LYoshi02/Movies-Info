@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
 
+import Auth from "./containers/Auth/Auth";
 import Inicio from "./containers/Inicio/Inicio";
 import InfoPelicula from "./containers/InfoPelicula/InfoPelicula";
 import Layout from "./hoc/Layout/Layout";
@@ -18,6 +19,7 @@ function App() {
       <Layout>
         <Switch>
           <Route exact path="/" component={Inicio} />
+          <Route exact path="/auth" component={Auth} />
           <Route path="/page/:page" component={Inicio} />
           <Route path="/pelicula/reviews/:id" component={MovieReviews} />
           <Route path="/pelicula/:id" component={InfoPelicula} />

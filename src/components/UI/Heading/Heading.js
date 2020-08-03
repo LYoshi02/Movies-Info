@@ -5,8 +5,7 @@ import { makeStyles } from "@material-ui/styles";
 const useStyles = makeStyles({
   headingSecondaryStyles: {
     marginBottom: "2rem",
-    fontWeight: "bold",
-    color: "#fff"
+    fontWeight: "bold"
   },
   headingInfoStyles: {
     marginBottom: "2rem",
@@ -32,6 +31,7 @@ const Heading = (props) => {
           component="h2"
           variant="h4"
           className={classes.headingSecondaryStyles}
+          {...props}
         >
           {props.children}
         </Typography>
