@@ -1,9 +1,8 @@
 import React from "react";
-import { makeStyles, Box, Button, Typography, InputAdornment, Input, IconButton } from "@material-ui/core";
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { makeStyles, Box, Button, Typography } from "@material-ui/core";
 
 import Heading from "../../UI/Heading/Heading";
+import Input from "../../UI/Input/Input";
 import SocialMedias from "../SocialMedias/SocialMedias";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,12 +17,6 @@ const useStyles = makeStyles((theme) => ({
       padding: "5rem 2rem",
     },
   },
-  inputStyles: {
-    marginBottom: "3rem",
-    "& > *": {
-      color: "#000",
-    },
-  },
   formButtonStyles: {
     padding: "2rem 1rem",
   },
@@ -34,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
 
 const AuthForm = (props) => {
   const classes = useStyles();
+
+  const formInputs = [];
+  for(let key in props.inputs) {
+    formInputs.push({...props.inputs[key], id: key});
+  }
+  console.log(formInputs);
 
   return (
     <form className={classes.formStyles}>
@@ -48,7 +47,20 @@ const AuthForm = (props) => {
       </Box>
 
       <Box m="2.5rem 0 5rem 0">
-        <Input
+        {
+          formInputs.map(input => (
+            <Input
+              key={input.id}
+              type={input.elementType}
+              inputConfig={input.elementConfig}
+              error={input.error}
+              changed={(event) => props.changeInputValue(event, input.id)}
+              value={input.value}
+              toggle={() => props.toggleInput(input.id)}
+            />
+          ))
+        }
+        {/* <Input
           placeholder="Nombre de Usuario"
           fullWidth
           color="secondary"
@@ -71,7 +83,7 @@ const AuthForm = (props) => {
               </IconButton>
             </InputAdornment>
           }
-        />
+        /> */}
         <Button
           variant="contained"
           color="secondary"
