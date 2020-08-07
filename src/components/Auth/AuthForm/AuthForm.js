@@ -28,14 +28,8 @@ const useStyles = makeStyles((theme) => ({
 const AuthForm = (props) => {
   const classes = useStyles();
 
-  const formInputs = [];
-  for(let key in props.inputs) {
-    formInputs.push({...props.inputs[key], id: key});
-  }
-  console.log(formInputs);
-
   return (
-    <form className={classes.formStyles}>
+    <form className={classes.formStyles} onSubmit={props.submitForm}>
       <Box textAlign="center">
         <Heading
           type="form"
@@ -48,7 +42,7 @@ const AuthForm = (props) => {
 
       <Box m="2.5rem 0 5rem 0">
         {
-          formInputs.map(input => (
+          props.inputs.map(input => (
             <Input
               key={input.id}
               type={input.elementType}
@@ -60,36 +54,13 @@ const AuthForm = (props) => {
             />
           ))
         }
-        {/* <Input
-          placeholder="Nombre de Usuario"
-          fullWidth
-          color="secondary"
-          className={classes.inputStyles}
-          classes={{ root: classes.inputStyles }}
-        />
-        <Input
-          placeholder="Contraseña"
-          fullWidth
-          color="secondary"
-          classes={{ root: classes.inputStyles }}
-          type={props.showPassword ? "text" : "password"}
-          endAdornment={
-            <InputAdornment position="end">
-              <IconButton
-              aria-label="toggle password visibility"
-              onClick={props.togglePasswordVisibility}
-              >
-                {props.showPassword ? <Visibility /> : <VisibilityOff />}
-              </IconButton>
-            </InputAdornment>
-          }
-        /> */}
         <Button
           variant="contained"
           color="secondary"
           disableElevation
           fullWidth
           className={classes.formButtonStyles}
+          type="submit"
         >
           {props.isSignIn ? "Iniciar Sesión" : "Crear Cuenta"}
         </Button>

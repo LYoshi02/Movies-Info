@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 
 import AuthForm from "../../components/Auth/AuthForm/AuthForm";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   containerStyles: {
@@ -14,16 +15,15 @@ const useStyles = makeStyles((theme) => ({
 const Auth = (props) => {
   const classes = useStyles();
   const [isSignIn, setIsSignIn] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
   const [authInputs, setAuthInputs] = useState({
-    username: {
+    email: {
       elementType: "auth-input",
       elementConfig:{
-        label:"Nombre de Usuario",
-        type: "text",
+        label:"Email",
+        type: "email",
         required: true
       },
-      value: "",
+      value: "test@test.com",
       error: {
         isError: false,
         label: "Error",
@@ -34,6 +34,7 @@ const Auth = (props) => {
       // },
       // touched: false,
       // valid: false
+      // TODO LATER
     },
     password: {
       elementType: "auth-password-input",
@@ -42,21 +43,27 @@ const Auth = (props) => {
         type: "password",
         required: true
       },
-      value: "",
+      value: "123456",
       error: {
         isError: false,
         label: "Error",
         info: "Se ha producido un error"
       }
     },
-    // password: {
-    //   value: "",
-    //   error: null
-    // },
-    // email: {
-    //   value: "",
-    //   error: null
-    // }
+    username: {
+      elementType: "auth-input",
+      elementConfig:{
+        label:"Nombre de Usuario",
+        type: "text",
+        required: true
+      },
+      value: "MyUsername",
+      error: {
+        isError: false,
+        label: "Error",
+        info: "Se ha producido un error"
+      },
+    },
   })
 
   const { pathname } = props.location;
@@ -67,24 +74,18 @@ const Auth = (props) => {
 
   const toggleInputHandler = (inputId) => {
     if(inputId === "password") {
-      passwordVisibilityHandler();
-      // This is not working
       setAuthInputs({
         ...authInputs,
         password: {
           ...authInputs.password,
           elementConfig:{
             ...authInputs.password.elementConfig,
-            type: showPassword ? "text" : "password"
+            type: authInputs.password.elementConfig.type === "password" ? "text" : "password"
           }
         }
-      })
+      });
     }
   }
-
-  const passwordVisibilityHandler = () => {
-    setShowPassword((prevState) => !prevState);
-  };
 
   const inputValueHandler = (event, inputId) => {
     setAuthInputs({
@@ -96,15 +97,58 @@ const Auth = (props) => {
     })
   }
 
+  const submitFormHandler = (event) => {
+    event.preventDefault();
+    console.log("Formulario enviado.");
+    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8";
+    const newUser = {
+      email: authInputs.email.value,
+      password: authInputs.password.value,
+      returnSecureToken: true
+    }
+    if(isSignIn) {
+      url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8";
+    }
+
+    axios.post(url, newUser)
+    .then(res => {
+      console.log(res);
+      // res.data.localId
+      const userData = {
+        [res.data.localId]: {
+          username: authInputs.username.value
+        }
+      }
+      axios.put("https://movies-info-f83aa.firebaseio.com/users.json", userData)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+
+  const formInputs = [];
+  for(let key in authInputs) {
+    formInputs.push({...authInputs[key], id: key});
+  }
+  if(isSignIn) {
+    const usernameIndex = formInputs.findIndex(input => input.id === "username");
+    formInputs.splice(usernameIndex, 1);
+  }
+
   return (
     <div className={classes.containerStyles}>
       <AuthForm
         isSignIn={isSignIn}
-        showPassword={showPassword}
-        togglePasswordVisibility={passwordVisibilityHandler}
-        inputs={authInputs}
+        inputs={formInputs}
         changeInputValue={inputValueHandler}
         toggleInput={toggleInputHandler}
+        submitForm={submitFormHandler}
       />
     </div>
   );

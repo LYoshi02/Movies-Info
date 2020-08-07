@@ -74,7 +74,7 @@ const MovieReviews = (props) => {
         postReview={postReviewHandler}
       />
 
-      <Heading type="secondary">
+      <Heading type="secondary" color="textPrimary">
         Todas las Reviews
         <Typography>{reviewsAmount}</Typography>
       </Heading>
