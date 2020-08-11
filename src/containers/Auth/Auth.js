@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
+import * as actions from "../../store/actions/index";
 import { makeStyles } from "@material-ui/core";
 
 import AuthForm from "../../components/Auth/AuthForm/AuthForm";
-import axios from "axios";
+import { connect } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   containerStyles: {
@@ -92,44 +94,49 @@ const Auth = (props) => {
       ...authInputs,
       [inputId]: {
         ...authInputs[inputId],
-        value: event.target.value.trim()
+        value: event.target.value
       }
     })
   }
 
   const submitFormHandler = (event) => {
     event.preventDefault();
-    console.log("Formulario enviado.");
-    let url = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8";
-    const newUser = {
+    const formData = {
       email: authInputs.email.value,
       password: authInputs.password.value,
-      returnSecureToken: true
+      username: authInputs.username.value
     }
-    if(isSignIn) {
-      url = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8";
-    }
+    props.onAuth(formData, isSignIn);
 
-    axios.post(url, newUser)
+    /*axios.post(url, newUser)
     .then(res => {
-      console.log(res);
-      // res.data.localId
+      // To have the user's name when he signs in
+      const username = authInputs.username.value.trim();
+      const userId = res.data.localId;
       const userData = {
-        [res.data.localId]: {
-          username: authInputs.username.value
-        }
+        username,
+        // userImg: imgUrl (In the future maybe)
       }
-      axios.put("https://movies-info-f83aa.firebaseio.com/users.json", userData)
-      .then(res => {
-        console.log(res);
-      })
+      const usernamesData = {
+        userId
+      }
+
+      axios.all([
+        axios.put(`https://movies-info-f83aa.firebaseio.com/users/${userId}.json`, userData),
+        axios.put(`https://movies-info-f83aa.firebaseio.com/usernames/${username}.json`, usernamesData)
+      ])
+      .then(
+        axios.spread((usersRes, usernamesRes) => {
+          console.log(usersRes, usernamesRes);
+        })
+      )
       .catch(error => {
         console.log(error);
       })
     })
     .catch(error => {
       console.log(error);
-    })
+    })*/
   }
 
   const formInputs = [];
@@ -154,4 +161,10 @@ const Auth = (props) => {
   );
 };
 
-export default Auth;
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onAuth: (formData, isSignIn) => dispatch(actions.auth(formData, isSignIn)) 
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Auth);

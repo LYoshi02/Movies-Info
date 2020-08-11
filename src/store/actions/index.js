@@ -15,3 +15,7 @@ export {
 export {
     fetchMovieReviews
 } from "./movieReviews";
+
+export {
+    auth
+} from "./auth";
