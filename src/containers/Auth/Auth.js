@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import * as actions from "../../store/actions/index";
 import { makeStyles } from "@material-ui/core";
 
 import AuthForm from "../../components/Auth/AuthForm/AuthForm";
 import { connect } from "react-redux";
+import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   containerStyles: {
@@ -107,36 +107,6 @@ const Auth = (props) => {
       username: authInputs.username.value
     }
     props.onAuth(formData, isSignIn);
-
-    /*axios.post(url, newUser)
-    .then(res => {
-      // To have the user's name when he signs in
-      const username = authInputs.username.value.trim();
-      const userId = res.data.localId;
-      const userData = {
-        username,
-        // userImg: imgUrl (In the future maybe)
-      }
-      const usernamesData = {
-        userId
-      }
-
-      axios.all([
-        axios.put(`https://movies-info-f83aa.firebaseio.com/users/${userId}.json`, userData),
-        axios.put(`https://movies-info-f83aa.firebaseio.com/usernames/${username}.json`, usernamesData)
-      ])
-      .then(
-        axios.spread((usersRes, usernamesRes) => {
-          console.log(usersRes, usernamesRes);
-        })
-      )
-      .catch(error => {
-        console.log(error);
-      })
-    })
-    .catch(error => {
-      console.log(error);
-    })*/
   }
 
   const formInputs = [];
@@ -148,6 +118,11 @@ const Auth = (props) => {
     formInputs.splice(usernameIndex, 1);
   }
 
+  let authRedirect = null;
+  if(props.isAuth) {
+    authRedirect = <Redirect to="/" />;
+  }
+
   return (
     <div className={classes.containerStyles}>
       <AuthForm
@@ -157,9 +132,16 @@ const Auth = (props) => {
         toggleInput={toggleInputHandler}
         submitForm={submitFormHandler}
       />
+      {authRedirect}
     </div>
   );
 };
+
+const mapStateToProps = (state) => {
+  return {
+    isAuth: state.auth.token
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -167,4 +149,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(Auth);
+export default connect(mapStateToProps, mapDispatchToProps)(Auth);

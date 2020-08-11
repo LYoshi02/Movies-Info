@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { connect } from "react-redux";
 import { BrowserRouter, Route, Redirect, Switch } from "react-router-dom";
+import * as actions from "./store/actions/index";
 
 import Auth from "./containers/Auth/Auth";
 import Inicio from "./containers/Inicio/Inicio";
@@ -15,13 +17,23 @@ import MovieReviews from "./containers/MovieReviews/MovieReviews";
 // Access token: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxODQ5OWY2ZTExYzNhYzBkMTEwMGFmNmZkZmNjM2VjNiIsInN1YiI6IjVmMDRlYWJjYTM1YzhlMDAzNzIxOGE2ZCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.HC9eyNdB4HdPVy047KPYRfOUDn_8nQy96yA5CvQTEoY
 
 // FIREBASE KEY: AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8
-function App() {
+function App(props) {
+  const { onCheckAuthState } = props;
+  let authRoute = null;
+  if(!props.isAuth) {
+    authRoute = <Route exact path={["/signin", "/signup"]} component={Auth} />;
+  }
+
+  useEffect(() => {
+    onCheckAuthState();
+  }, [onCheckAuthState]);
+  
   return (
     <BrowserRouter>
       <Layout>
         <Switch>
           <Route exact path="/" component={Inicio} />
-          <Route exact path={["/signin", "/signup"]} component={Auth} />
+          {authRoute}
           <Route path="/page/:page" component={Inicio} />
           <Route path="/pelicula/reviews/:id" component={MovieReviews} />
           <Route path="/pelicula/:id" component={InfoPelicula} />
@@ -32,4 +44,16 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isAuth: state.auth.token
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onCheckAuthState: () => dispatch(actions.checkAuthState())
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);

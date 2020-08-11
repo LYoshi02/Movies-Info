@@ -17,5 +17,6 @@ export {
 } from "./movieReviews";
 
 export {
-    auth
+    auth,
+    checkAuthState
 } from "./auth";
