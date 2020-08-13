@@ -31,7 +31,7 @@ const Review = (props) => {
                         <PersonRoundedIcon />
                     </Avatar>
                 }
-                title="Usuario 1"
+                title={props.username}
                 subheader={<Subheader stars={props.stars} postDate={props.postDate} />}
                 classes={{title: classes.cardHeaderTitleStyles}}
             />

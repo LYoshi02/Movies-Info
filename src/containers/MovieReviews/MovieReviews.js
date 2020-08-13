@@ -14,8 +14,28 @@ const MovieReviews = (props) => {
   const [userStars, setUserStars] = useState(0);
   const [reqReviewFinished, setReqReviewFinished] = useState(false);
   const [reqReviewError, setReqReviewError] = useState(false);
+  const [userReviewId, setUserReviewId] = useState(null);
+  const [fetchedUserReview, setFetchedUserReview] = useState(null);
 
   const { onFetchReviews } = props;
+
+  useEffect(() => {
+    if(props.isAuth && props.userId) {
+      axios.get(`https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${props.userId}"`)
+      .then(res => {
+        console.log(res);
+        for(let key in res.data) {
+          setFetchedUserReview(res.data[key]);
+          setUserReviewId(key);
+          setUserReviewInput(res.data[key].review);
+          setUserStars(res.data[key].stars);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      })
+    }
+  }, [props.isAuth, props.userId, props.match.params.id]);
 
   useEffect(() => {
     onFetchReviews(props.match.params.id);
@@ -24,29 +44,56 @@ const MovieReviews = (props) => {
   const postReviewHandler = () => {
     // TODO: put this Date functionality and the MainInfo component one in a shared function
     const options = { year: "numeric", month: "long", day: "numeric" };
-    const newReview = {
+    let userReview = {
       postDate: new Date().toLocaleDateString("es-ES", options),
       review: userReviewInput.trim(),
       stars: userStars,
       likes: 0,
+      username: props.username,
+      userId: props.userId
     };
+    // let requestConfig = {
+    //   method: "post",
+    //   url: `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json`,
+    //   data: userReview
+    // };
 
-    axios
-      .post(
-        `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json`,
-        newReview
-      )
-      .then((res) => {
-        console.log(res);
-        setReqReviewFinished(true);
-        setReqReviewError(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setReqReviewFinished(true);
-        setReqReviewError(true);
-      });
+    if(fetchedUserReview) {
+      userReview = {
+        ...userReview,
+        postDate: fetchedUserReview.postDate,
+        likes: fetchedUserReview.likes,
+        username: props.username
+      }
+      props.onUpdateReview(props.match.params.id, userReviewId, userReview);
+      // requestConfig = {
+      //   method: "put",
+      //   url: `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}/${userReviewId}.json`,
+      //   data: userReview
+      // }
+    } else {
+      props.onPostReview(props.match.params.id, userReview);
+    }
+
+    // axios(requestConfig)
+    //   .then((res) => {
+    //     console.log(res);
+    //     setReqReviewFinished(true);
+    //     setReqReviewError(false);
+    //   })
+    //   .catch((error) => {
+    //     console.log(error);
+    //     setReqReviewFinished(true);
+    //     setReqReviewError(true);
+    //   });
   };
+
+  const deleteReviewHandler = () => {
+    if(userReviewId && props.match.params.id) {
+      console.log("borrado");
+      props.onDeleteUserReview(props.match.params.id, userReviewId);
+    }
+  }
 
   let reviewsAmount = "";
   if (props.reviews) {
@@ -72,6 +119,8 @@ const MovieReviews = (props) => {
         stars={userStars}
         starsChanged={(event) => setUserStars(parseInt(event.target.value))}
         postReview={postReviewHandler}
+        isEditing={userReviewId !== null}
+        deleteReview={deleteReviewHandler}
       />
 
       <Heading type="secondary" color="textPrimary">
@@ -88,8 +137,8 @@ const MovieReviews = (props) => {
       <Alert
         open={reqReviewFinished}
         close={closeAlertHandler}
-        severity={reqReviewError ? "error" : "success"}
-        message={reqReviewError ? "Se produjo un error al subir la review" : "Review subida correctamente"}
+        severity={props.deleteError ? "error" : "success"}
+        message={props.alertMessage}
       />
     </Box>
   );
@@ -100,12 +149,20 @@ const mapStateToProps = (state) => {
     reviews: state.movieReviews.reviews,
     reqFinished: state.movieReviews.reqFinished,
     error: state.movieReviews.error,
+    alertMessage: state.movieReviews.alertMessage,
+    deleteError: state.movieReviews.deleteError,
+    username: state.auth.username,
+    userId: state.auth.userId,
+    isAuth: state.auth.token
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onFetchReviews: (movieId) => dispatch(actions.fetchMovieReviews(movieId)),
+    onDeleteUserReview: (movieId, reviewId) => dispatch(actions.deleteUserReview(movieId, reviewId)),
+    onPostReview: (movieId, userReview) => dispatch(actions.postReview(movieId, userReview)),
+    onUpdateReview: (movieId, reviewId, userReview) => dispatch(actions.updateReview(movieId, reviewId, userReview))
   };
 };
 

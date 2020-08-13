@@ -13,7 +13,10 @@ export {
 } from "./infoPelicula";
 
 export {
-    fetchMovieReviews
+    fetchMovieReviews,
+    deleteUserReview,
+    postReview,
+    updateReview
 } from "./movieReviews";
 
 export {

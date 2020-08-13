@@ -47,6 +47,7 @@ const Reviews = (props) => {
         likes={rev.likes}
         content={rev.review}
         stars={rev.stars}
+        username={rev.username}
       />
     ));
   } else {

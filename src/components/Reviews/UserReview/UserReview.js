@@ -2,8 +2,9 @@ import React from "react";
 import { Box, Input, Button } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/styles";
+import { red } from "@material-ui/core/colors";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   mainBoxStyles: {
     padding: "2rem",
     backgroundColor: "rgb(255,255,255)",
@@ -19,15 +20,51 @@ const useStyles = makeStyles({
   },
   btnBoxStyles: {
     textAlign: "right",
+    [theme.breakpoints.down("xs")]: {
+      display: "flex",
+      flexDirection: "column",
+    },
   },
-});
+  deleteBtnStyles: {
+    color: red[500],
+    borderColor: red[500],
+    marginRight: "1.5rem",
+    "&:hover": {
+      color: red[700],
+      borderColor: red[700],
+      backgroundColor: "rgba(211,47,47,.1)",
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginRight: "0",
+      marginBottom: "1.5rem",
+    },
+  },
+}));
 
 const UserReview = (props) => {
   const classes = useStyles();
-
+  // let deleteReviewBtn = null;
+  // if(props.isEditing) {
+  //   deleteReviewBtn = (
+  //     <Button variant="outlined" classes={{outlined: classes.deleteBtnStyles}}>Eliminar Review</Button>
+  //   )
+  // }
+  let deleteReviewBtn = (
+    <Button
+      variant="outlined"
+      className={classes.deleteBtnStyles}
+      onClick={props.deleteReview}
+    >
+      Eliminar Review
+    </Button>
+  );
   return (
     <Box className={classes.mainBoxStyles}>
-      <Rating value={props.stars} onChange={props.starsChanged} name="user-stars" />
+      <Rating
+        value={props.stars}
+        onChange={props.starsChanged}
+        name="user-stars"
+      />
       <Input
         multiline
         fullWidth
@@ -40,8 +77,15 @@ const UserReview = (props) => {
       />
 
       <Box className={classes.btnBoxStyles}>
-        <Button variant="contained" color="secondary" disableElevation disabled={props.stars === 0} onClick={props.postReview}>
-          Subir Review
+        {deleteReviewBtn}
+        <Button
+          variant="contained"
+          color="secondary"
+          disableElevation
+          disabled={props.stars === 0}
+          onClick={props.postReview}
+        >
+          {props.isEditing ? "Editar Review" : "Subir Review"}
         </Button>
       </Box>
     </Box>
