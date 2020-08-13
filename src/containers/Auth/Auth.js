@@ -70,7 +70,6 @@ const Auth = (props) => {
 
   const { pathname } = props.location;
   useEffect(() => {
-    console.log("change");
     setIsSignIn(pathname === "/signin");
   }, [pathname]);
 

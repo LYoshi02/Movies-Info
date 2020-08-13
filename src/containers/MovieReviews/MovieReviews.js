@@ -12,8 +12,6 @@ import { connect } from "react-redux";
 const MovieReviews = (props) => {
   const [userReviewInput, setUserReviewInput] = useState("");
   const [userStars, setUserStars] = useState(0);
-  const [reqReviewFinished, setReqReviewFinished] = useState(false);
-  const [reqReviewError, setReqReviewError] = useState(false);
   const [userReviewId, setUserReviewId] = useState(null);
   const [fetchedUserReview, setFetchedUserReview] = useState(null);
 
@@ -52,11 +50,6 @@ const MovieReviews = (props) => {
       username: props.username,
       userId: props.userId
     };
-    // let requestConfig = {
-    //   method: "post",
-    //   url: `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json`,
-    //   data: userReview
-    // };
 
     if(fetchedUserReview) {
       userReview = {
@@ -66,26 +59,9 @@ const MovieReviews = (props) => {
         username: props.username
       }
       props.onUpdateReview(props.match.params.id, userReviewId, userReview);
-      // requestConfig = {
-      //   method: "put",
-      //   url: `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}/${userReviewId}.json`,
-      //   data: userReview
-      // }
     } else {
       props.onPostReview(props.match.params.id, userReview);
     }
-
-    // axios(requestConfig)
-    //   .then((res) => {
-    //     console.log(res);
-    //     setReqReviewFinished(true);
-    //     setReqReviewError(false);
-    //   })
-    //   .catch((error) => {
-    //     console.log(error);
-    //     setReqReviewFinished(true);
-    //     setReqReviewError(true);
-    //   });
   };
 
   const deleteReviewHandler = () => {
@@ -105,10 +81,6 @@ const MovieReviews = (props) => {
     } else {
       reviewsAmount = `${amount} Reviews`;
     }
-  }
-
-  const closeAlertHandler = (event, reason) => {
-    setReqReviewFinished(false);
   }
 
   return (
@@ -135,9 +107,9 @@ const MovieReviews = (props) => {
       />
 
       <Alert
-        open={reqReviewFinished}
-        close={closeAlertHandler}
-        severity={props.deleteError ? "error" : "success"}
+        open={props.reqReviewsFinished}
+        close={props.onCloseAlert}
+        severity={props.reqError ? "error" : "success"}
         message={props.alertMessage}
       />
     </Box>
@@ -148,9 +120,9 @@ const mapStateToProps = (state) => {
   return {
     reviews: state.movieReviews.reviews,
     reqFinished: state.movieReviews.reqFinished,
-    error: state.movieReviews.error,
+    reqReviewsFinished: state.movieReviews.reqReviewsFinished,
+    reqError: state.movieReviews.reqError,
     alertMessage: state.movieReviews.alertMessage,
-    deleteError: state.movieReviews.deleteError,
     username: state.auth.username,
     userId: state.auth.userId,
     isAuth: state.auth.token
@@ -162,7 +134,8 @@ const mapDispatchToProps = (dispatch) => {
     onFetchReviews: (movieId) => dispatch(actions.fetchMovieReviews(movieId)),
     onDeleteUserReview: (movieId, reviewId) => dispatch(actions.deleteUserReview(movieId, reviewId)),
     onPostReview: (movieId, userReview) => dispatch(actions.postReview(movieId, userReview)),
-    onUpdateReview: (movieId, reviewId, userReview) => dispatch(actions.updateReview(movieId, reviewId, userReview))
+    onUpdateReview: (movieId, reviewId, userReview) => dispatch(actions.updateReview(movieId, reviewId, userReview)),
+    onCloseAlert: () => dispatch(actions.closeAlert())
   };
 };
 

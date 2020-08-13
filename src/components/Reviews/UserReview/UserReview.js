@@ -43,21 +43,19 @@ const useStyles = makeStyles((theme) => ({
 
 const UserReview = (props) => {
   const classes = useStyles();
-  // let deleteReviewBtn = null;
-  // if(props.isEditing) {
-  //   deleteReviewBtn = (
-  //     <Button variant="outlined" classes={{outlined: classes.deleteBtnStyles}}>Eliminar Review</Button>
-  //   )
-  // }
-  let deleteReviewBtn = (
-    <Button
-      variant="outlined"
-      className={classes.deleteBtnStyles}
-      onClick={props.deleteReview}
-    >
-      Eliminar Review
-    </Button>
-  );
+  let deleteReviewBtn = null;
+  if(props.isEditing) {
+    deleteReviewBtn = (
+      <Button
+        variant="outlined"
+        className={classes.deleteBtnStyles}
+        onClick={props.deleteReview}
+      >
+        Eliminar Review
+      </Button>
+    );
+  }
+  
   return (
     <Box className={classes.mainBoxStyles}>
       <Rating

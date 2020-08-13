@@ -5,9 +5,8 @@ const initialState = {
     reviews: null,
     reqFinished: false,
     reqReviewsFinished: false,
-    errorReviews: null,
-    alertMessage: "",
-    deleteError: null
+    reqError: null,
+    alertMessage: ""
 }
 
 const fetchReviewsInit = (state, action) => {
@@ -34,25 +33,34 @@ const fetchReviewsError = (state, action) => {
     })
 }
 
-const deleteReviewInit = (state, action) => {
+const requestReviewInit = (state, action) => {
     return updateObject(state, {
-        message: "",
-        deleteError: null
+        reqReviewsFinished: false,
+        reqError: null,
+        alertMessage: ""
     })
 }
 
-const deleteReviewSuccess = (state, action) => {
+const requestReviewSuccess = (state, action) => {
     return updateObject(state, {
-        message: action.message,
-        deleteError: null
+        reqReviewsFinished: true,
+        reqError: null,
+        alertMessage: action.message
     })
 }
 
-const deleteReviewError = (state, action) => {
+const requestReviewError = (state, action) => {
     return updateObject(state, {
-        message: action.message,
-        deleteError: action.error
+        reqReviewsFinished: true,
+        reqError: action.error,
+        alertMessage: action.message
     })
+}
+
+const closeAlert = (state, action) => {
+    return updateObject(state, {
+        reqReviewsFinished: false
+    });
 }
 
 const reducer = (state = initialState, action) => {
@@ -60,9 +68,10 @@ const reducer = (state = initialState, action) => {
         case actionTypes.FETCH_REVIEWS_INIT: return fetchReviewsInit(state, action);
         case actionTypes.FETCH_REVIEWS_SUCCESS: return fetchReviewsSuccess(state, action);
         case actionTypes.FETCH_REVIEWS_ERROR: return fetchReviewsError(state, action);
-        case actionTypes.DELETE_REVIEW_INIT: return deleteReviewInit(state, action);
-        case actionTypes.DELETE_REVIEW_SUCCESS: return deleteReviewSuccess(state, action);
-        case actionTypes.DELETE_REVIEW_ERROR: return deleteReviewError(state.action);
+        case actionTypes.REQUEST_REVIEW_INIT: return requestReviewInit(state, action);
+        case actionTypes.REQUEST_REVIEW_SUCCESS: return requestReviewSuccess(state, action);
+        case actionTypes.REQUEST_REVIEW_ERROR: return requestReviewError(state, action);
+        case actionTypes.CLOSE_ALERT: return closeAlert(state, action);
         default: return state;
     }
 }

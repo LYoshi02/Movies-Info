@@ -7,11 +7,9 @@ export const fetchMovieReviews = (movieId) => {
         axios.get(`https://movies-info-f83aa.firebaseio.com/reviews/${movieId}.json`)
         .then(res => {
             dispatch(fetchReviewsSuccess(res.data));
-            console.log(res)
         })
         .catch(error => {
             dispatch(fetchReviewsError(error));
-            console.log(error);
         })
     }
 }
@@ -38,61 +36,73 @@ export const fetchReviewsError = (error) => {
 
 export const deleteUserReview = (movieId, reviewId) => {
     return dispatch => {
-        dispatch(deleteReviewInit());
+        dispatch(requestReviewInit());
         axios.delete(`https://movies-info-f83aa.firebaseio.com/reviews/${movieId}/${reviewId}.json`)
         .then(res => {
-            console.log(res);
-            dispatch(deleteReviewSuccess());
+            const successMessage = "Tu review se eliminó correctamente";
+            dispatch(requestReviewSuccess(successMessage));
         })
         .catch(error => {
-            console.log(error);
-            dispatch(deleteReviewError(error));
+            const errorMessage = "Se produjo un error al eliminar tu review";
+            dispatch(requestReviewError(error, errorMessage));
         })
-    }
-}
-
-export const deleteReviewInit = () => {
-    return {
-        type: actionTypes.DELETE_REVIEW_INIT
-    }
-}
-
-export const deleteReviewSuccess = () => {
-    return {
-        type: actionTypes.DELETE_REVIEW_SUCCESS,
-        message: "Tu review se eliminó correctamente"
-    }
-}
-
-export const deleteReviewError = (error) => {
-    return {
-        type: actionTypes.DELETE_REVIEW_ERROR,
-        error,
-        message: "Se produjo un error al eliminar tu review"
     }
 }
 
 // TODO: administrar la request de la review posteada (mensaje, errores)
 export const postReview = (movieId, userReview) => {
     return dispatch => {
+        dispatch(requestReviewInit());
         axios.post(`https://movies-info-f83aa.firebaseio.com/reviews/${movieId}.json`, userReview)
         .then(res => {
-            console.log(res);
+            const successMessage = "Tu review se subió correctamente";
+            dispatch(requestReviewSuccess(successMessage));
         })
         .catch(error => {
-            console.log(error);
+            const errorMessage = "Se produjo un error al subir tu review";
+            dispatch(requestReviewError(error, errorMessage));
         });
     }
 }
 
 export const updateReview = (movieId, reviewId, userReview) => {
     return dispatch => {
+        dispatch(requestReviewInit());
         axios.put(`https://movies-info-f83aa.firebaseio.com/reviews/${movieId}/${reviewId}.json`, userReview)
         .then(res => {
-            console.log(res);
+            const successMessage = "Tu review se editó correctamente";
+            dispatch(requestReviewSuccess(successMessage));
         })
         .catch(error => {
-            console.log(error);
+            const errorMessage = "Se produjo un error al editar tu review";
+            dispatch(requestReviewError(error, errorMessage));
         })
+    }
+}
+
+export const requestReviewInit = () => {
+    return {
+        type: actionTypes.REQUEST_REVIEW_INIT
+    }
+}
+
+export const requestReviewSuccess = (message) => {
+    return {
+        type: actionTypes.REQUEST_REVIEW_SUCCESS,
+        message
+    }
+}
+
+export const requestReviewError = (error, message) => {
+    return {
+        type: actionTypes.REQUEST_REVIEW_ERROR,
+        error,
+        message
+    }
+}
+
+export const closeAlert = () => {
+    return {
+        type: actionTypes.CLOSE_ALERT
     }
 }

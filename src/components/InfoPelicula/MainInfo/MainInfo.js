@@ -63,7 +63,7 @@ const MainInfo = (props) => {
         </Typography>
 
         <div className={classes.Details}>
-          <Detail name="fecha de lanzamiento">{longReleaseDate}</Detail>
+          <Detail name="fecha de estreno">{longReleaseDate}</Detail>
           <Detail name="duración">{runtimeString}</Detail>
           <Detail name="género(s)">{generos}</Detail>
         </div>

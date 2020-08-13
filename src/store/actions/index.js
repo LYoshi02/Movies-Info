@@ -16,7 +16,8 @@ export {
     fetchMovieReviews,
     deleteUserReview,
     postReview,
-    updateReview
+    updateReview,
+    closeAlert
 } from "./movieReviews";
 
 export {
