@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
 const UserReview = (props) => {
   const classes = useStyles();
   let deleteReviewBtn = null;
-  if(props.isEditing) {
+  if(props.reviewStatus === "edit") {
     deleteReviewBtn = (
       <Button
         variant="outlined"
@@ -83,7 +83,7 @@ const UserReview = (props) => {
           disabled={props.stars === 0}
           onClick={props.postReview}
         >
-          {props.isEditing ? "Editar Review" : "Subir Review"}
+          {props.reviewStatus === "edit" ? "Editar Review" : "Subir Review"}
         </Button>
       </Box>
     </Box>

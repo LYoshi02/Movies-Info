@@ -33,7 +33,7 @@ const Estrenos = (props) => {
       <Grid container>
         <Grid item xs={1} />
         <Grid item xs={10}>
-          <Heading type="secondary">Películas Estrenos</Heading>
+          <Heading type="secondary" color="textPrimary">Películas Estrenos</Heading>
           {lista_estrenos}
         </Grid>
         <Grid item xs={1} />

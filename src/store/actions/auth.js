@@ -49,7 +49,6 @@ export const auth = (formData, isSignIn) => {
 export const checkAuthState = () => {
   return (dispatch) => {
     const token = localStorage.getItem("token");
-    console.log(token);
     if (!token) {
       dispatch(authLogout());
     } else {
@@ -96,12 +95,10 @@ export const checkAuthTimeout = (expirationDate) => {
 };
 
 export const getExtraUserData = (token, userId) => {
-  console.log(userId);
   return (dispatch) => {
     axios
       .get(`https://movies-info-f83aa.firebaseio.com/users/${userId}.json`)
       .then((res) => {
-        console.log(res.data);
         dispatch(authSuccess(token, userId, res.data));
       });
   };

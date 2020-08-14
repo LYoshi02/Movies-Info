@@ -19,25 +19,40 @@ const MovieReviews = (props) => {
 
   useEffect(() => {
     if(props.isAuth && props.userId) {
-      axios.get(`https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${props.userId}"`)
+      console.log("fetching user review");
+      fetchUserReview();
+    }
+  }, [props.isAuth, props.userId]);
+
+  useEffect(() => {
+    console.log(props.reviewStatus);
+    if(props.reviewStatus === "edit") {
+      fetchUserReview();
+    }
+  }, [props.reviewStatus]);
+
+  useEffect(() => {
+    onFetchReviews(props.match.params.id);
+  }, [onFetchReviews, props.match.params.id]);
+
+  const fetchUserReview = () => {
+    axios.get(`https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${props.userId}"`)
       .then(res => {
         console.log(res);
-        for(let key in res.data) {
-          setFetchedUserReview(res.data[key]);
-          setUserReviewId(key);
-          setUserReviewInput(res.data[key].review);
-          setUserStars(res.data[key].stars);
+        if(Object.keys(res.data).length > 0) {
+          for(let key in res.data) {
+            setFetchedUserReview(res.data[key]);
+            setUserReviewId(key);
+            setUserReviewInput(res.data[key].review);
+            setUserStars(res.data[key].stars);
+          }
+          props.onChangeReviewStatus("edit");
         }
       })
       .catch(error => {
         console.log(error);
       })
-    }
-  }, [props.isAuth, props.userId, props.match.params.id]);
-
-  useEffect(() => {
-    onFetchReviews(props.match.params.id);
-  }, [onFetchReviews, props.match.params.id]);
+  }
 
   const postReviewHandler = () => {
     // TODO: put this Date functionality and the MainInfo component one in a shared function
@@ -51,7 +66,9 @@ const MovieReviews = (props) => {
       userId: props.userId
     };
 
-    if(fetchedUserReview) {
+    console.log(props.reviewStatus);
+    if(props.reviewStatus === "edit") {
+      console.log("hi");
       userReview = {
         ...userReview,
         postDate: fetchedUserReview.postDate,
@@ -66,8 +83,11 @@ const MovieReviews = (props) => {
 
   const deleteReviewHandler = () => {
     if(userReviewId && props.match.params.id) {
-      console.log("borrado");
       props.onDeleteUserReview(props.match.params.id, userReviewId);
+      setUserReviewInput("");
+      setUserStars(0);
+      setUserReviewId(null);
+      setFetchedUserReview(null);
     }
   }
 
@@ -90,8 +110,8 @@ const MovieReviews = (props) => {
         inputValueChanged={(event) => setUserReviewInput(event.target.value)}
         stars={userStars}
         starsChanged={(event) => setUserStars(parseInt(event.target.value))}
+        reviewStatus={props.reviewStatus}
         postReview={postReviewHandler}
-        isEditing={userReviewId !== null}
         deleteReview={deleteReviewHandler}
       />
 
@@ -123,6 +143,7 @@ const mapStateToProps = (state) => {
     reqReviewsFinished: state.movieReviews.reqReviewsFinished,
     reqError: state.movieReviews.reqError,
     alertMessage: state.movieReviews.alertMessage,
+    reviewStatus: state.movieReviews.reviewStatus,
     username: state.auth.username,
     userId: state.auth.userId,
     isAuth: state.auth.token
@@ -135,7 +156,8 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteUserReview: (movieId, reviewId) => dispatch(actions.deleteUserReview(movieId, reviewId)),
     onPostReview: (movieId, userReview) => dispatch(actions.postReview(movieId, userReview)),
     onUpdateReview: (movieId, reviewId, userReview) => dispatch(actions.updateReview(movieId, reviewId, userReview)),
-    onCloseAlert: () => dispatch(actions.closeAlert())
+    onCloseAlert: () => dispatch(actions.closeAlert()),
+    onChangeReviewStatus: (newStatus) => dispatch(actions.changeReviewStatus(newStatus))
   };
 };
 

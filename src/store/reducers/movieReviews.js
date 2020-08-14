@@ -6,7 +6,8 @@ const initialState = {
     reqFinished: false,
     reqReviewsFinished: false,
     reqError: null,
-    alertMessage: ""
+    alertMessage: "",
+    reviewStatus: "create"
 }
 
 const fetchReviewsInit = (state, action) => {
@@ -63,6 +64,12 @@ const closeAlert = (state, action) => {
     });
 }
 
+const changeReviewStatus = (state, action) => {
+    return updateObject(state, {
+        reviewStatus: action.newStatus
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.FETCH_REVIEWS_INIT: return fetchReviewsInit(state, action);
@@ -72,6 +79,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.REQUEST_REVIEW_SUCCESS: return requestReviewSuccess(state, action);
         case actionTypes.REQUEST_REVIEW_ERROR: return requestReviewError(state, action);
         case actionTypes.CLOSE_ALERT: return closeAlert(state, action);
+        case actionTypes.CHANGE_REVIEW_STATUS: return changeReviewStatus(state, action);
         default: return state;
     }
 }

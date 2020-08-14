@@ -41,8 +41,10 @@ export const deleteUserReview = (movieId, reviewId) => {
         .then(res => {
             const successMessage = "Tu review se eliminó correctamente";
             dispatch(requestReviewSuccess(successMessage));
+            dispatch(changeReviewStatus("create"));
         })
         .catch(error => {
+            console.log(error);
             const errorMessage = "Se produjo un error al eliminar tu review";
             dispatch(requestReviewError(error, errorMessage));
         })
@@ -57,6 +59,7 @@ export const postReview = (movieId, userReview) => {
         .then(res => {
             const successMessage = "Tu review se subió correctamente";
             dispatch(requestReviewSuccess(successMessage));
+            dispatch(changeReviewStatus("edit"));
         })
         .catch(error => {
             const errorMessage = "Se produjo un error al subir tu review";
@@ -104,5 +107,12 @@ export const requestReviewError = (error, message) => {
 export const closeAlert = () => {
     return {
         type: actionTypes.CLOSE_ALERT
+    }
+}
+
+export const changeReviewStatus = (status) => {
+    return {
+        type: actionTypes.CHANGE_REVIEW_STATUS,
+        newStatus: status
     }
 }

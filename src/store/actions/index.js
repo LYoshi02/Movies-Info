@@ -17,7 +17,8 @@ export {
     deleteUserReview,
     postReview,
     updateReview,
-    closeAlert
+    closeAlert,
+    changeReviewStatus
 } from "./movieReviews";
 
 export {

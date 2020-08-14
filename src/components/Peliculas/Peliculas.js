@@ -24,7 +24,7 @@ const Peliculas = (props) => {
 
   return (
     <Box mt="5rem" id="movie-start">
-      <Heading type="secondary">Todas las Películas</Heading>
+      <Heading type="secondary" color="textPrimary">Todas las Películas</Heading>
       {lista_peliculas}
     </Box>
   );
