@@ -3,26 +3,20 @@ import { updateObject } from "../../shared/utility";
 
 const initialState = {
     info: null,
-    cast: null,
-    reviews: null,
-    reqFinished: false
+    cast: null
 }
 
 const fecthInfoInit = (state, action) => {
     return updateObject(state, {
         info: null,
-        cast: null,
-        reviews: null,
-        reqFinished: false
+        cast: null
     })
 }
 
 const fetchInfoSuccess = (state, action) => {
     return updateObject(state, {
         info: action.info,
-        cast: action.cast,
-        reviews: action.reviews,
-        reqFinished: true
+        cast: action.cast
     });
 }
 

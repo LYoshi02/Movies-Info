@@ -15,7 +15,7 @@ const MovieReviews = (props) => {
   const [userReviewId, setUserReviewId] = useState(null);
   const [fetchedUserReview, setFetchedUserReview] = useState(null);
 
-  const { onFetchReviews, onSetAuthRedirectPath } = props;
+  const { onSetAuthRedirectPath } = props;
 
   useEffect(() => {
     onSetAuthRedirectPath("/");
@@ -29,10 +29,6 @@ const MovieReviews = (props) => {
       fetchUserReview();
     }
   }, [props.reviewStatus]);
-
-  useEffect(() => {
-    onFetchReviews(props.match.params.id);
-  }, [onFetchReviews, props.match.params.id]);
 
   const fetchUserReview = () => {
     axios
@@ -123,11 +119,7 @@ const MovieReviews = (props) => {
         <Typography>{reviewsAmount}</Typography>
       </Heading>
 
-      <Reviews
-        reviews={props.reviews}
-        reqFinished={props.reqFinished}
-        error={props.error}
-      />
+      <Reviews />
 
       <Alert
         open={props.reqReviewsFinished}
@@ -141,8 +133,6 @@ const MovieReviews = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    reviews: state.movieReviews.reviews,
-    reqFinished: state.movieReviews.reqFinished,
     reqReviewsFinished: state.movieReviews.reqReviewsFinished,
     reqError: state.movieReviews.reqError,
     alertMessage: state.movieReviews.alertMessage,
@@ -150,13 +140,13 @@ const mapStateToProps = (state) => {
     username: state.auth.username,
     userId: state.auth.userId,
     isAuth: state.auth.token !== null,
-    token: state.auth.token
+    token: state.auth.token,
+    reviews: state.reviews.reviews
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchReviews: (movieId) => dispatch(actions.fetchMovieReviews(movieId)),
     onDeleteUserReview: (movieId, reviewId, token) =>
       dispatch(actions.deleteUserReview(movieId, reviewId, token)),
     onPostReview: (movieId, userReview, token) =>

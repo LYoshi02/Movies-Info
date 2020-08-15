@@ -27,7 +27,6 @@ const Review = (props) => {
     if(props.likes && props.likes.length > 0) {
         isLiked = props.likes.includes(props.userId);
     }
-    console.log(isLiked, props.userId);
 
     return (  
         <Card className={classes.cardStyles}>

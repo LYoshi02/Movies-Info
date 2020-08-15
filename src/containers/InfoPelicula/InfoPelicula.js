@@ -31,7 +31,7 @@ const InfoPelicula = (props) => {
 
         <div>
           <Heading type="info-tertiary">Reseñas:</Heading>
-          <Reviews reviews={props.reviews} reqFinished={props.reqFinished} />
+          <Reviews />
           <Button
             color="secondary"
             onClick={() => props.history.push(`/pelicula/reviews/${id}`)}
@@ -49,9 +49,7 @@ const InfoPelicula = (props) => {
 const mapStateToProps = (state) => {
   return {
     info: state.infoPelicula.info,
-    cast: state.infoPelicula.cast,
-    reviews: state.infoPelicula.reviews,
-    reqFinished: state.infoPelicula.reqFinished
+    cast: state.infoPelicula.cast
   };
 };
 

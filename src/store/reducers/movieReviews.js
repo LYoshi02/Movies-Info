@@ -2,36 +2,11 @@ import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../../shared/utility";
 
 const initialState = {
-    reviews: null,
-    reqFinished: false,
     reqReviewsFinished: false,
     reqError: null,
     alertMessage: "",
-    reviewStatus: "create"
-}
-
-const fetchReviewsInit = (state, action) => {
-    return updateObject(state, {
-        reviews: null,
-        reqFinished: false,
-        error: null
-    });
-}
-
-const fetchReviewsSuccess = (state, action) => {
-    return updateObject(state, {
-        reviews: action.reviews,
-        reqFinished: true,
-        error: null
-    })
-}
-
-const fetchReviewsError = (state, action) => {
-    return updateObject(state, {
-        reviews: null,
-        reqFinished: true,
-        error: action.error
-    })
+    reviewStatus: "create",
+    userReview: null
 }
 
 const requestReviewInit = (state, action) => {
@@ -43,24 +18,10 @@ const requestReviewInit = (state, action) => {
 }
 
 const requestReviewSuccess = (state, action) => {
-    let updatedReviews;
-    if(action.reviewData.requestAction === "delete") {
-        for(let key in state.reviews) {
-            if(key !== action.reviewData.id) {
-                const review = {[key]: {...state.reviews[key]}}
-                updatedReviews = updateObject(updatedReviews, review);
-            }
-        }
-    } else {
-        const userReview = { [action.reviewData.id]: {...action.reviewData.review} }
-        updatedReviews = updateObject(state.reviews, userReview);
-    }
-
     return updateObject(state, {
         reqReviewsFinished: true,
         reqError: null,
-        alertMessage: action.message,
-        reviews: updatedReviews
+        alertMessage: action.message
     })
 }
 
@@ -86,9 +47,6 @@ const changeReviewStatus = (state, action) => {
 
 const reducer = (state = initialState, action) => {
     switch(action.type) {
-        case actionTypes.FETCH_REVIEWS_INIT: return fetchReviewsInit(state, action);
-        case actionTypes.FETCH_REVIEWS_SUCCESS: return fetchReviewsSuccess(state, action);
-        case actionTypes.FETCH_REVIEWS_ERROR: return fetchReviewsError(state, action);
         case actionTypes.REQUEST_REVIEW_INIT: return requestReviewInit(state, action);
         case actionTypes.REQUEST_REVIEW_SUCCESS: return requestReviewSuccess(state, action);
         case actionTypes.REQUEST_REVIEW_ERROR: return requestReviewError(state, action);

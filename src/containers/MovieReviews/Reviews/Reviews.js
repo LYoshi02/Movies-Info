@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as actions from "../../../store/actions/index";
 import { connect } from "react-redux";
 import { withRouter } from "react-router";
@@ -23,27 +23,43 @@ const useStyles = makeStyles({
   },
   boxStyles: {
     "& > *": {
-        marginBottom: "2rem"
-    }
-  }
+      marginBottom: "2rem",
+    },
+  },
 });
 
 const Reviews = (props) => {
   const classes = useStyles();
 
+  const { onFetchReviews } = props;
+  useEffect(() => {
+    onFetchReviews(props.match.params.id);
+  }, [onFetchReviews]);
+
   const reviewLikedHandler = (likesArray, reviewId, isLiked) => {
-    let updatedLikesArray = [];
-    if(isLiked) {
-      updatedLikesArray = likesArray.filter(element => element !== props.userId);
-    } else {
-      updatedLikesArray = [props.userId];
-      if(likesArray) {
-        updatedLikesArray = [...likesArray, props.userId]; 
+    if (props.isAuth) {
+      let updatedLikesArray = [];
+      if (isLiked) {
+        updatedLikesArray = likesArray.filter(
+          (element) => element !== props.userId
+        );
+      } else {
+        updatedLikesArray = [props.userId];
+        if (likesArray) {
+          updatedLikesArray = [...likesArray, props.userId];
+        }
       }
+
+      props.onLikeReview(
+        props.match.params.id,
+        reviewId,
+        updatedLikesArray,
+        props.token
+      );
+    } else {
+      props.history.push(`/signin?movieId=${props.match.params.id}`);
     }
-    
-    props.onLikeReview(props.match.params.id, reviewId, updatedLikesArray, props.token);
-  }
+  };
 
   let reviews = (
     <div className={classes.spinnerStyles}>
@@ -55,7 +71,7 @@ const Reviews = (props) => {
     for (let key in props.reviews) {
       reviewsArray.push({ ...props.reviews[key], id: key });
     }
-    reviewsArray.sort((a,b) => b.likes - a.likes);
+    reviewsArray.sort((a, b) => b.likes - a.likes);
 
     reviews = reviewsArray.map((rev) => (
       <Review
@@ -65,7 +81,9 @@ const Reviews = (props) => {
         content={rev.review}
         stars={rev.stars}
         username={rev.username}
-        reviewLiked={(isLiked) => reviewLikedHandler(rev.likes, rev.id, isLiked)}
+        reviewLiked={(isLiked) =>
+          reviewLikedHandler(rev.likes, rev.id, isLiked)
+        }
         userId={props.userId}
       />
     ));
@@ -95,14 +113,21 @@ const Reviews = (props) => {
 const mapStateToProps = (state) => {
   return {
     userId: state.auth.userId,
-    token: state.auth.token
+    token: state.auth.token,
+    isAuth: state.auth.token !== null,
+    reviews: state.reviews.reviews,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onLikeReview: (movieId, reviewId, likesArray, token) => dispatch(actions.likeReview(movieId, reviewId, likesArray, token))
+    onFetchReviews: (movieId) => dispatch(actions.fetchMovieReviews(movieId)),
+    onLikeReview: (movieId, reviewId, likesArray, token) =>
+      dispatch(actions.likeReview(movieId, reviewId, likesArray, token)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Reviews));
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(withRouter(Reviews));

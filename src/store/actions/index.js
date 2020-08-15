@@ -13,7 +13,6 @@ export {
 } from "./infoPelicula";
 
 export {
-    fetchMovieReviews,
     deleteUserReview,
     postReview,
     updateReview,
@@ -28,5 +27,6 @@ export {
 } from "./auth";
 
 export {
+    fetchMovieReviews,
     likeReview
-} from "./reviews";
+} from "./reviews"
