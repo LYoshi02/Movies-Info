@@ -4,7 +4,7 @@ import * as actions from "../../store/actions/index";
 import Casting from "../../components/InfoPelicula/Casting/Casting";
 import Heading from "../../components/UI/Heading/Heading";
 import MainInfo from "../../components/InfoPelicula/MainInfo/MainInfo";
-import Reviews from "../../components/Reviews/Reviews";
+import Reviews from "../MovieReviews/Reviews/Reviews";
 
 import classes from "./InfoPelicula.module.css";
 import { Button } from "@material-ui/core";

@@ -26,3 +26,7 @@ export {
     checkAuthState,
     setAuthRedirectPath
 } from "./auth";
+
+export {
+    likeReview
+} from "./reviews";

@@ -6,7 +6,7 @@ import { Box, Typography } from "@material-ui/core";
 import Alert from "../../components/UI/Alert/Alert";
 import UserReview from "../../components/Reviews/UserReview/UserReview";
 import Heading from "../../components/UI/Heading/Heading";
-import Reviews from "../../components/Reviews/Reviews";
+import Reviews from "./Reviews/Reviews";
 import { connect } from "react-redux";
 
 const MovieReviews = (props) => {
@@ -63,7 +63,7 @@ const MovieReviews = (props) => {
         postDate: new Date().toLocaleDateString("es-ES", options),
         review: userReviewInput.trim(),
         stars: userStars,
-        likes: 0,
+        likes: null,
         username: props.username,
         userId: props.userId,
       };

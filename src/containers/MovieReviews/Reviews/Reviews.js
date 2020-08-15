@@ -1,4 +1,7 @@
 import React from "react";
+import * as actions from "../../../store/actions/index";
+import { connect } from "react-redux";
+import { withRouter } from "react-router";
 import {
   Box,
   makeStyles,
@@ -8,7 +11,7 @@ import {
 } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 
-import Review from "./Review/Review";
+import Review from "../../../components/Reviews/Review/Review";
 
 const useStyles = makeStyles({
   spinnerStyles: {
@@ -27,6 +30,20 @@ const useStyles = makeStyles({
 
 const Reviews = (props) => {
   const classes = useStyles();
+
+  const reviewLikedHandler = (likesArray, reviewId, isLiked) => {
+    let updatedLikesArray = [];
+    if(isLiked) {
+      updatedLikesArray = likesArray.filter(element => element !== props.userId);
+    } else {
+      updatedLikesArray = [props.userId];
+      if(likesArray) {
+        updatedLikesArray = [...likesArray, props.userId]; 
+      }
+    }
+    
+    props.onLikeReview(props.match.params.id, reviewId, updatedLikesArray, props.token);
+  }
 
   let reviews = (
     <div className={classes.spinnerStyles}>
@@ -48,6 +65,8 @@ const Reviews = (props) => {
         content={rev.review}
         stars={rev.stars}
         username={rev.username}
+        reviewLiked={(isLiked) => reviewLikedHandler(rev.likes, rev.id, isLiked)}
+        userId={props.userId}
       />
     ));
   } else {
@@ -73,4 +92,17 @@ const Reviews = (props) => {
   return <Box className={classes.boxStyles}>{reviews}</Box>;
 };
 
-export default Reviews;
+const mapStateToProps = (state) => {
+  return {
+    userId: state.auth.userId,
+    token: state.auth.token
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onLikeReview: (movieId, reviewId, likesArray, token) => dispatch(actions.likeReview(movieId, reviewId, likesArray, token))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Reviews));

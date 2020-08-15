@@ -23,6 +23,12 @@ const useStyles = makeStyles({
 const Review = (props) => {
     const classes = useStyles();
 
+    let isLiked = false;
+    if(props.likes && props.likes.length > 0) {
+        isLiked = props.likes.includes(props.userId);
+    }
+    console.log(isLiked, props.userId);
+
     return (  
         <Card className={classes.cardStyles}>
             <CardHeader 
@@ -42,18 +48,11 @@ const Review = (props) => {
             </CardContent>
             <CardActions>
                 <Box display="flex" alignItems="center" marginRight="1rem">
-                    <IconButton>
+                    <IconButton onClick={() => props.reviewLiked(isLiked)} color={isLiked ? "secondary" : "default"}>
                         <ThumbUpRoundedIcon />
                     </IconButton>
-                    <Typography component="span">{props.likes}</Typography>
+                    <Typography component="span">{props.likes ? props.likes.length : "0"}</Typography>
                 </Box>
-
-                {/* <Box display="flex" alignItems="center">
-                    <IconButton color="primary">
-                        <ThumbDownRoundedIcon />
-                    </IconButton>
-                    <Typography component="span">3</Typography>
-                </Box> */}
             </CardActions>
         </Card>
     );
