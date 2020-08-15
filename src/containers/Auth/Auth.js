@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
 import { makeStyles } from "@material-ui/core";
 
 import AuthForm from "../../components/Auth/AuthForm/AuthForm";
-import { connect } from "react-redux";
-import { Redirect } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   containerStyles: {
@@ -31,12 +30,6 @@ const Auth = (props) => {
         label: "Error",
         info: "Se ha producido un error"
       },
-      // validation: {
-      //   minLength: 5
-      // },
-      // touched: false,
-      // valid: false
-      // TODO LATER
     },
     password: {
       elementType: "auth-password-input",
@@ -67,6 +60,16 @@ const Auth = (props) => {
       },
     },
   })
+
+  useEffect(() => {
+    let redirectPath = "/";
+    const urlParams = new URLSearchParams(props.location.search);
+    const movieId = urlParams.get("movieId")
+    if(movieId) {
+      redirectPath = `/pelicula/reviews/${movieId}`;
+    }
+    props.onSetAuthRedirectPath(redirectPath);
+  }, []);
 
   const { pathname } = props.location;
   useEffect(() => {
@@ -117,11 +120,6 @@ const Auth = (props) => {
     formInputs.splice(usernameIndex, 1);
   }
 
-  let authRedirect = null;
-  if(props.isAuth) {
-    authRedirect = <Redirect to="/" />;
-  }
-
   return (
     <div className={classes.containerStyles}>
       <AuthForm
@@ -131,21 +129,15 @@ const Auth = (props) => {
         toggleInput={toggleInputHandler}
         submitForm={submitFormHandler}
       />
-      {authRedirect}
     </div>
   );
 };
 
-const mapStateToProps = (state) => {
-  return {
-    isAuth: state.auth.token
-  }
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
-    onAuth: (formData, isSignIn) => dispatch(actions.auth(formData, isSignIn)) 
+    onAuth: (formData, isSignIn) => dispatch(actions.auth(formData, isSignIn)),
+    onSetAuthRedirectPath: (redirectPath) => dispatch(actions.setAuthRedirectPath(redirectPath))
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Auth);
+export default connect(null, mapDispatchToProps)(Auth);

@@ -43,10 +43,24 @@ const requestReviewInit = (state, action) => {
 }
 
 const requestReviewSuccess = (state, action) => {
+    let updatedReviews;
+    if(action.reviewData.requestAction === "delete") {
+        for(let key in state.reviews) {
+            if(key !== action.reviewData.id) {
+                const review = {[key]: {...state.reviews[key]}}
+                updatedReviews = updateObject(updatedReviews, review);
+            }
+        }
+    } else {
+        const userReview = { [action.reviewData.id]: {...action.reviewData.review} }
+        updatedReviews = updateObject(state.reviews, userReview);
+    }
+
     return updateObject(state, {
         reqReviewsFinished: true,
         reqError: null,
-        alertMessage: action.message
+        alertMessage: action.message,
+        reviews: updatedReviews
     })
 }
 

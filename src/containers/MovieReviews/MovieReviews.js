@@ -15,18 +15,17 @@ const MovieReviews = (props) => {
   const [userReviewId, setUserReviewId] = useState(null);
   const [fetchedUserReview, setFetchedUserReview] = useState(null);
 
-  const { onFetchReviews } = props;
+  const { onFetchReviews, onSetAuthRedirectPath } = props;
 
   useEffect(() => {
-    if(props.isAuth && props.userId) {
-      console.log("fetching user review");
+    onSetAuthRedirectPath("/");
+    if (props.isAuth && props.userId) {
       fetchUserReview();
     }
-  }, [props.isAuth, props.userId]);
+  }, [props.isAuth, props.userId, onSetAuthRedirectPath]);
 
   useEffect(() => {
-    console.log(props.reviewStatus);
-    if(props.reviewStatus === "edit") {
+    if (props.reviewStatus === "edit") {
       fetchUserReview();
     }
   }, [props.reviewStatus]);
@@ -36,11 +35,13 @@ const MovieReviews = (props) => {
   }, [onFetchReviews, props.match.params.id]);
 
   const fetchUserReview = () => {
-    axios.get(`https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${props.userId}"`)
-      .then(res => {
-        console.log(res);
-        if(Object.keys(res.data).length > 0) {
-          for(let key in res.data) {
+    axios
+      .get(
+        `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${props.userId}"`
+      )
+      .then((res) => {
+        if (Object.keys(res.data).length > 0) {
+          for (let key in res.data) {
             setFetchedUserReview(res.data[key]);
             setUserReviewId(key);
             setUserReviewInput(res.data[key].review);
@@ -49,47 +50,49 @@ const MovieReviews = (props) => {
           props.onChangeReviewStatus("edit");
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
-      })
-  }
+      });
+  };
 
   const postReviewHandler = () => {
     // TODO: put this Date functionality and the MainInfo component one in a shared function
-    const options = { year: "numeric", month: "long", day: "numeric" };
-    let userReview = {
-      postDate: new Date().toLocaleDateString("es-ES", options),
-      review: userReviewInput.trim(),
-      stars: userStars,
-      likes: 0,
-      username: props.username,
-      userId: props.userId
-    };
+    if (props.isAuth) {
+      const options = { year: "numeric", month: "long", day: "numeric" };
+      let userReview = {
+        postDate: new Date().toLocaleDateString("es-ES", options),
+        review: userReviewInput.trim(),
+        stars: userStars,
+        likes: 0,
+        username: props.username,
+        userId: props.userId,
+      };
 
-    console.log(props.reviewStatus);
-    if(props.reviewStatus === "edit") {
-      console.log("hi");
-      userReview = {
-        ...userReview,
-        postDate: fetchedUserReview.postDate,
-        likes: fetchedUserReview.likes,
-        username: props.username
+      if (props.reviewStatus === "edit") {
+        userReview = {
+          ...userReview,
+          postDate: fetchedUserReview.postDate,
+          likes: fetchedUserReview.likes,
+          username: props.username,
+        };
+        props.onUpdateReview(props.match.params.id, userReviewId, userReview, props.token);
+      } else {
+        props.onPostReview(props.match.params.id, userReview, props.token);
       }
-      props.onUpdateReview(props.match.params.id, userReviewId, userReview);
     } else {
-      props.onPostReview(props.match.params.id, userReview);
+      props.history.push(`/signin?movieId=${props.match.params.id}`);
     }
   };
 
   const deleteReviewHandler = () => {
-    if(userReviewId && props.match.params.id) {
-      props.onDeleteUserReview(props.match.params.id, userReviewId);
+    if (userReviewId && props.match.params.id) {
+      props.onDeleteUserReview(props.match.params.id, userReviewId, props.token);
       setUserReviewInput("");
       setUserStars(0);
       setUserReviewId(null);
       setFetchedUserReview(null);
     }
-  }
+  };
 
   let reviewsAmount = "";
   if (props.reviews) {
@@ -146,18 +149,24 @@ const mapStateToProps = (state) => {
     reviewStatus: state.movieReviews.reviewStatus,
     username: state.auth.username,
     userId: state.auth.userId,
-    isAuth: state.auth.token
+    isAuth: state.auth.token !== null,
+    token: state.auth.token
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onFetchReviews: (movieId) => dispatch(actions.fetchMovieReviews(movieId)),
-    onDeleteUserReview: (movieId, reviewId) => dispatch(actions.deleteUserReview(movieId, reviewId)),
-    onPostReview: (movieId, userReview) => dispatch(actions.postReview(movieId, userReview)),
-    onUpdateReview: (movieId, reviewId, userReview) => dispatch(actions.updateReview(movieId, reviewId, userReview)),
+    onDeleteUserReview: (movieId, reviewId, token) =>
+      dispatch(actions.deleteUserReview(movieId, reviewId, token)),
+    onPostReview: (movieId, userReview, token) =>
+      dispatch(actions.postReview(movieId, userReview, token)),
+    onUpdateReview: (movieId, reviewId, userReview, token) =>
+      dispatch(actions.updateReview(movieId, reviewId, userReview, token)),
     onCloseAlert: () => dispatch(actions.closeAlert()),
-    onChangeReviewStatus: (newStatus) => dispatch(actions.changeReviewStatus(newStatus))
+    onChangeReviewStatus: (newStatus) =>
+      dispatch(actions.changeReviewStatus(newStatus)),
+    onSetAuthRedirectPath: (redirectPath) => dispatch(actions.setAuthRedirectPath(redirectPath))
   };
 };
 

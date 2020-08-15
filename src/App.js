@@ -37,7 +37,7 @@ function App(props) {
           <Route path="/page/:page" component={Inicio} />
           <Route path="/pelicula/reviews/:id" component={MovieReviews} />
           <Route path="/pelicula/:id" component={InfoPelicula} />
-          <Redirect to="/" />
+          <Redirect to={props.redirectPath} />
         </Switch>
       </Layout>
     </BrowserRouter>
@@ -46,7 +46,8 @@ function App(props) {
 
 const mapStateToProps = (state) => {
   return {
-    isAuth: state.auth.token
+    isAuth: state.auth.token !== null,
+    redirectPath: state.auth.redirectPath
   }
 }
 

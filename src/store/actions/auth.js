@@ -135,3 +135,10 @@ export const createNewUsername = (token, userId, username) => {
       });
   };
 };
+
+export const setAuthRedirectPath = (redirectPath) => {
+  return {
+    type: actionTypes.SET_AUTH_REDIRECT_PATH,
+    path: redirectPath
+  }
+}

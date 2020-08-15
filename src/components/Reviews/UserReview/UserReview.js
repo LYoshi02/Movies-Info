@@ -3,13 +3,14 @@ import { Box, Input, Button } from "@material-ui/core";
 import Rating from "@material-ui/lab/Rating";
 import { makeStyles } from "@material-ui/styles";
 import { red } from "@material-ui/core/colors";
+import Heading from "../../UI/Heading/Heading";
 
 const useStyles = makeStyles((theme) => ({
   mainBoxStyles: {
     padding: "2rem",
     backgroundColor: "rgb(255,255,255)",
     borderRadius: "5px",
-    marginBottom: "5rem",
+    marginBottom: "6rem",
   },
   inputStyles: {
     color: "var(--color-gris-oscuro)",
@@ -57,7 +58,11 @@ const UserReview = (props) => {
   }
   
   return (
-    <Box className={classes.mainBoxStyles}>
+    <React.Fragment>
+      <Heading type="secondary" color="textPrimary">
+        Escribí tu opinión
+      </Heading>
+      <Box className={classes.mainBoxStyles}>
       <Rating
         value={props.stars}
         onChange={props.starsChanged}
@@ -87,6 +92,7 @@ const UserReview = (props) => {
         </Button>
       </Box>
     </Box>
+    </React.Fragment>
   );
 };
 

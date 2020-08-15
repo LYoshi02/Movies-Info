@@ -4,7 +4,8 @@ import { updateObject } from "../../shared/utility";
 const initialState = {
     userId: null,
     token: null,
-    username: null
+    username: null,
+    redirectPath: "/"
     // error: null,
     // loading: null
 }
@@ -24,10 +25,17 @@ const authLogout = (state, action) => {
     })
 }
 
+const setAuthRedirectPath = (state, action) => {
+    return updateObject(state, {
+        redirectPath: action.path
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
+        case actionTypes.SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state, action);
         default: return state;
     }
 }
