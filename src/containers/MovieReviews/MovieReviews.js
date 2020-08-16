@@ -15,25 +15,19 @@ const MovieReviews = (props) => {
   const [userReviewId, setUserReviewId] = useState(null);
   const [fetchedUserReview, setFetchedUserReview] = useState(null);
 
-  const { onSetAuthRedirectPath } = props;
+  const { onSetAuthRedirectPath, isAuth, userId, reviewStatus, reviews } = props;
 
   useEffect(() => {
     onSetAuthRedirectPath("/");
-    if (props.isAuth && props.userId) {
+    if ((isAuth && userId) || reviewStatus === "edit") {
       fetchUserReview();
     }
-  }, [props.isAuth, props.userId, onSetAuthRedirectPath]);
-
-  useEffect(() => {
-    if (props.reviewStatus === "edit") {
-      fetchUserReview();
-    }
-  }, [props.reviewStatus]);
+  }, [isAuth, userId, onSetAuthRedirectPath, reviewStatus, reviews]);
 
   const fetchUserReview = () => {
     axios
       .get(
-        `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${props.userId}"`
+        `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${userId}"`
       )
       .then((res) => {
         if (Object.keys(res.data).length > 0) {
@@ -52,8 +46,8 @@ const MovieReviews = (props) => {
   };
 
   const postReviewHandler = () => {
-    // TODO: put this Date functionality and the MainInfo component one in a shared function
-    if (props.isAuth) {
+    if (isAuth) {
+      // TODO: put this Date functionality and the MainInfo component one in a shared function
       const options = { year: "numeric", month: "long", day: "numeric" };
       let userReview = {
         postDate: new Date().toLocaleDateString("es-ES", options),
@@ -61,10 +55,10 @@ const MovieReviews = (props) => {
         stars: userStars,
         likes: null,
         username: props.username,
-        userId: props.userId,
+        userId: userId,
       };
 
-      if (props.reviewStatus === "edit") {
+      if (reviewStatus === "edit") {
         userReview = {
           ...userReview,
           postDate: fetchedUserReview.postDate,
@@ -91,8 +85,8 @@ const MovieReviews = (props) => {
   };
 
   let reviewsAmount = "";
-  if (props.reviews) {
-    const amount = Object.keys(props.reviews).length;
+  if (reviews) {
+    const amount = Object.keys(reviews).length;
     if (amount === 0) {
       reviewsAmount = "0 Reviews";
     } else if (amount === 1) {
@@ -109,7 +103,7 @@ const MovieReviews = (props) => {
         inputValueChanged={(event) => setUserReviewInput(event.target.value)}
         stars={userStars}
         starsChanged={(event) => setUserStars(parseInt(event.target.value))}
-        reviewStatus={props.reviewStatus}
+        reviewStatus={reviewStatus}
         postReview={postReviewHandler}
         deleteReview={deleteReviewHandler}
       />

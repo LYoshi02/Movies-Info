@@ -31,10 +31,16 @@ const useStyles = makeStyles({
 const Reviews = (props) => {
   const classes = useStyles();
 
-  const { onFetchReviews } = props;
+  const { onFetchReviews, reqUserReviewFinished } = props;
   useEffect(() => {
     onFetchReviews(props.match.params.id);
   }, [onFetchReviews]);
+
+  useEffect(() => {
+    if(reqUserReviewFinished) {
+      onFetchReviews(props.match.params.id);
+    }
+  }, [onFetchReviews, reqUserReviewFinished]);
 
   const reviewLikedHandler = (likesArray, reviewId, isLiked) => {
     if (props.isAuth) {
@@ -116,6 +122,7 @@ const mapStateToProps = (state) => {
     token: state.auth.token,
     isAuth: state.auth.token !== null,
     reviews: state.reviews.reviews,
+    reqUserReviewFinished: state.movieReviews.reqReviewsFinished
   };
 };
 

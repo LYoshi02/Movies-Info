@@ -5,8 +5,7 @@ const initialState = {
     reqReviewsFinished: false,
     reqError: null,
     alertMessage: "",
-    reviewStatus: "create",
-    userReview: null
+    reviewStatus: "create"
 }
 
 const requestReviewInit = (state, action) => {
