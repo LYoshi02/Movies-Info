@@ -2,7 +2,7 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 
 import BackgroundImg from "../../UI/BackgroundImg/BackgroundImg";
-import Detail from "./Detail/Detail";
+import Detail from "../../UI/Detail/Detail";
 import Heading from "../../UI/Heading/Heading";
 import Poster from "./Poster/Poster";
 

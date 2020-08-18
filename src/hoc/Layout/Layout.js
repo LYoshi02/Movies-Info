@@ -5,6 +5,7 @@ import { Grid, createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Navigation from "../../components/Navigation/Navigation";
 import { grey, indigo } from "@material-ui/core/colors";
 import { connect } from "react-redux";
+import { withRouter } from "react-router";
 
 const theme = createMuiTheme({
   palette: {
@@ -55,6 +56,14 @@ const Layout = (props) => {
     setSearchInputValue(event.target.value);
   };
 
+  const redirectUserHandler = () => {
+    if(props.isAuth) {
+      props.history.push("/profile");
+    } else {
+      props.history.push("/signin");
+    }
+  }
+
   return (
     <ThemeProvider theme={theme}>
       <Grid container direction="column">
@@ -67,6 +76,7 @@ const Layout = (props) => {
             searchResultsData={props.searchResults}
             reqLoading={props.reqLoading}
             searchInputRef={searchInputRef}
+            redirectUser={redirectUserHandler}
           />
         </Grid>
 
@@ -79,7 +89,8 @@ const Layout = (props) => {
 const mapStateToProps = (state) => {
   return {
     searchResults: state.layout.searchResults,
-    reqLoading: state.layout.reqLoading
+    reqLoading: state.layout.reqLoading,
+    isAuth: state.auth.token !== null
   }
 }
 
@@ -90,4 +101,4 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Layout);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Layout));

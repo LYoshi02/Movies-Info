@@ -1,5 +1,6 @@
 import React from "react";
 import { AppBar, Toolbar, IconButton, Box } from "@material-ui/core";
+import AccountCircleRoundedIcon from '@material-ui/icons/AccountCircleRounded';
 import CloseRoundedIcon from "@material-ui/icons/CloseRounded";
 import SearchRoundedIcon from "@material-ui/icons/SearchRounded";
 
@@ -33,6 +34,9 @@ const Navigation = (props) => {
         <Toolbar>
           <Logo />
           <IconButton onClick={props.toggleSearchBar}>{searchIcon}</IconButton>
+          <IconButton onClick={props.redirectUser}>
+            <AccountCircleRoundedIcon color="secondary" />
+          </IconButton>
         </Toolbar>
       </AppBar>
 

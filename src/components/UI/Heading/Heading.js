@@ -31,7 +31,7 @@ const useStyles = makeStyles({
 });
 
 const Heading = (props) => {
-  const classes = useStyles();
+  const classes = useStyles(props);
   let headingElement;
 
   switch (props.type) {

@@ -8,6 +8,7 @@ import Inicio from "./containers/Inicio/Inicio";
 import InfoPelicula from "./containers/InfoPelicula/InfoPelicula";
 import Layout from "./hoc/Layout/Layout";
 import MovieReviews from "./containers/MovieReviews/MovieReviews";
+import User from "./containers/User/User";
 
 // API key: 9dbf064d
 // Url: http://www.omdbapi.com/?i=tt3896198&apikey=9dbf064d
@@ -19,9 +20,11 @@ import MovieReviews from "./containers/MovieReviews/MovieReviews";
 // FIREBASE KEY: AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8
 function App(props) {
   const { onCheckAuthState } = props;
-  let authRoute = null;
-  if(!props.isAuth) {
-    authRoute = <Route exact path={["/signin", "/signup"]} component={Auth} />;
+  let userRoute = null;
+  if(props.isAuth) {
+    userRoute = <Route path="/profile" component={User} />
+  } else {
+    userRoute = <Route exact path={["/signin", "/signup"]} component={Auth} />;
   }
 
   useEffect(() => {
@@ -33,7 +36,7 @@ function App(props) {
       <Layout>
         <Switch>
           <Route exact path="/" component={Inicio} />
-          {authRoute}
+          {userRoute}
           <Route path="/page/:page" component={Inicio} />
           <Route path="/pelicula/reviews/:id" component={MovieReviews} />
           <Route path="/pelicula/:id" component={InfoPelicula} />

@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import Detail from "../../../InfoPelicula/MainInfo/Detail/Detail";
+import Detail from "../../../UI/Detail/Detail";
 import { Link } from "react-router-dom";
 
 import notFound from "../../../../assets/image_not_found.png";

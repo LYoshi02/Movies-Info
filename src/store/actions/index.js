@@ -23,10 +23,15 @@ export {
 export {
     auth,
     checkAuthState,
-    setAuthRedirectPath
+    setAuthRedirectPath,
+    authLogout
 } from "./auth";
 
 export {
     fetchMovieReviews,
     likeReview
-} from "./reviews"
+} from "./reviews";
+
+export {
+    uploadImage
+} from "./user";

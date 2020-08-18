@@ -5,6 +5,7 @@ const initialState = {
     userId: null,
     token: null,
     username: null,
+    userImgUrl: null,
     redirectPath: "/"
     // error: null,
     // loading: null
@@ -14,14 +15,18 @@ const authSuccess = (state, action) => {
     return updateObject(state, {
         userId: action.userId,
         token: action.token,
-        username: action.userData.username
+        username: action.userData.username,
+        userImgUrl: action.userData.imageUrl
     })
 }
 
 const authLogout = (state, action) => {
     return updateObject(state, {
         userId: null,
-        token: null
+        token: null,
+        username: null,
+        userImgUrl: null,
+        redirectPath: "/"
     })
 }
 
