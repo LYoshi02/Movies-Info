@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import * as actions from "../../store/actions/index";
+import { getLongDate } from "../../shared/utility";
 import { Box, Typography } from "@material-ui/core";
 
 import Alert from "../../components/UI/Alert/Alert";
@@ -48,9 +49,10 @@ const MovieReviews = (props) => {
   const postReviewHandler = () => {
     if (isAuth) {
       // TODO: put this Date functionality and the MainInfo component one in a shared function
-      const options = { year: "numeric", month: "long", day: "numeric" };
+      // const options = { year: "numeric", month: "long", day: "numeric" };
       let userReview = {
-        postDate: new Date().toLocaleDateString("es-ES", options),
+        // postDate: new Date().toLocaleDateString("es-ES", options),
+        postDate: getLongDate(),
         review: userReviewInput.trim(),
         stars: userStars,
         likes: null,

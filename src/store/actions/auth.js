@@ -1,5 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
+import { getLongDate } from "../../shared/utility";
 
 export const auth = (formData, isSignIn) => {
   return (dispatch) => {
@@ -108,7 +109,7 @@ export const createNewUsername = (token, userId, username) => {
   return (dispatch) => {
     const userData = {
       username,
-      // userImg: imgUrl (In the future maybe)
+      signupDate: getLongDate()
     };
     const usernamesData = {
       userId,

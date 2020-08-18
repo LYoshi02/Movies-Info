@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as actions from "../../store/actions/index";
 import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -13,17 +13,26 @@ const useStyles = makeStyles({
     padding: "4rem 2rem",
     margin: "2rem",
     borderRadius: "5px",
-  }
+  },
 });
 
 const User = (props) => {
   const classes = useStyles();
 
+  const { onFetchUserInfo, userId } = props;
+  useEffect(() => {
+    onFetchUserInfo(userId);
+  }, [onFetchUserInfo, userId]);
+
   const checkFile = (event) => {
     const userImage = event.target.files[0];
-    if (userImage && (userImage.type ==="image/jpeg" || userImage.type ==="image/png") && userImage.size < 5000000) {
+    if (
+      userImage &&
+      (userImage.type === "image/jpeg" || userImage.type === "image/png") &&
+      userImage.size < 5000000
+    ) {
       console.log(event.target.files[0]);
-      props.onUploadImage(userImage, props.userId, props.username);
+      props.onUploadImage(userImage, props.userId, props.username, props.signupDate);
     } else {
       console.log("error al subir");
     }
@@ -35,23 +44,32 @@ const User = (props) => {
         Tu Perfil
       </Heading>
 
-      <UserInfo uploadImage={checkFile} userImgUrl={props.userImgUrl} logout={props.onLogout}/>
+      <UserInfo
+        uploadImage={checkFile}
+        username={props.username}
+        signupDate={props.signupDate}
+        userImgUrl={props.userImgUrl}
+        logout={props.onLogout}
+      />
     </Box>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    username: state.auth.username,
+    username: state.user.username,
+    userImgUrl: state.user.imgUrl,
+    signupDate: state.user.signupDate,
     userId: state.auth.userId,
-    userImgUrl: state.auth.userImgUrl
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUploadImage: (userImage, userId, username) => dispatch(actions.uploadImage(userImage, userId, username)),
-    onLogout: () => dispatch(actions.authLogout())
+    onUploadImage: (userImage, userId, username, signupDate) =>
+      dispatch(actions.uploadImage(userImage, userId, username, signupDate)),
+    onLogout: () => dispatch(actions.authLogout()),
+    onFetchUserInfo: (userId) => dispatch(actions.fetchUserInfo(userId)),
   };
 };
 

@@ -1,9 +1,10 @@
 import React from "react";
-import { Box, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-import Detail from "../../UI/Detail/Detail";
+import { Box, Button, createMuiTheme } from "@material-ui/core";
+import { makeStyles, ThemeProvider } from "@material-ui/styles";
 
+import Detail from "../../UI/Detail/Detail";
 import UserImg from "../UserImg/UserImg";
+import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   infoStyles: {
@@ -16,7 +17,23 @@ const useStyles = makeStyles((theme) => ({
       gridRowGap: "2rem",
     },
   },
+  detailsStyles: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    [theme.breakpoints.down("xs")]: {
+      alignItems: "stretch"
+    }
+  }
 }));
+
+const redTheme = createMuiTheme({
+  palette: { primary: red },
+  typography: {
+    htmlFontSize: 10,
+  },
+});
 
 const UserInfo = (props) => {
   const classes = useStyles();
@@ -25,17 +42,24 @@ const UserInfo = (props) => {
     <Box className={classes.infoStyles}>
       <UserImg changed={props.uploadImage} imgUrl={props.userImgUrl} />
 
-      <Box>
-        <Detail name="username" color="textSecondary">
-          Yoshi Debat
-        </Detail>
-        <Detail name="fecha de registro" color="textSecondary">
-          17 de octubre 2020
-        </Detail>
-        <Detail name="reviews hechas" color="textSecondary">
-          10
-        </Detail>
-        <Button variant="contained" onClick={props.logout}>Cerrar Sesión</Button>
+      <Box className={classes.detailsStyles}>
+        <Box mb={{xs: "2rem"}}>
+          <Detail name="username" color="textSecondary">
+            {props.username}
+          </Detail>
+          <Detail name="fecha de registro" color="textSecondary">
+            {props.signupDate}
+          </Detail>
+        </Box>
+        <ThemeProvider theme={redTheme}>
+          <Button
+            variant="contained"
+            onClick={props.logout}
+            color="primary"
+          >
+            Cerrar Sesión
+          </Button>
+        </ThemeProvider>
       </Box>
     </Box>
   );

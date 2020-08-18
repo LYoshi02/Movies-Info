@@ -1,5 +1,6 @@
 import React from "react";
 import { Typography } from "@material-ui/core";
+import { getLongDate } from "../../../shared/utility";
 
 import BackgroundImg from "../../UI/BackgroundImg/BackgroundImg";
 import Detail from "../../UI/Detail/Detail";
@@ -23,9 +24,7 @@ const MainInfo = (props) => {
 
   const generos = (genres) ? genres.map(gen => gen.name).join(" - ") : "No disponible";
   const releaseYear = (release_date === "") ? "" : new Date(release_date).getFullYear();
-
-  const options = { year: 'numeric', month: 'long', day: 'numeric' };
-  const longReleaseDate = (release_date === "") ? "No disponible" : new Date(release_date).toLocaleDateString("es-ES", options);
+  const longReleaseDate = (release_date === "") ? "No disponible" : getLongDate(release_date);
 
   let runtimeString = "";
   if(runtime > 0) {

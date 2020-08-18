@@ -2,7 +2,7 @@ import * as actionTypes from "../actions/actionTypes";
 import { updateObject } from "../../shared/utility";
 
 const initialState = {
-    reqReviewsFinished: false,
+    reqUserFinished: false,
     reqError: null,
     alertMessage: "",
     reviewStatus: "create"
@@ -10,7 +10,7 @@ const initialState = {
 
 const requestReviewInit = (state, action) => {
     return updateObject(state, {
-        reqReviewsFinished: false,
+        reqUserFinished: false,
         reqError: null,
         alertMessage: ""
     })
@@ -18,7 +18,7 @@ const requestReviewInit = (state, action) => {
 
 const requestReviewSuccess = (state, action) => {
     return updateObject(state, {
-        reqReviewsFinished: true,
+        reqUserFinished: true,
         reqError: null,
         alertMessage: action.message
     })
@@ -26,7 +26,7 @@ const requestReviewSuccess = (state, action) => {
 
 const requestReviewError = (state, action) => {
     return updateObject(state, {
-        reqReviewsFinished: true,
+        reqUserFinished: true,
         reqError: action.error,
         alertMessage: action.message
     })
@@ -34,7 +34,7 @@ const requestReviewError = (state, action) => {
 
 const closeAlert = (state, action) => {
     return updateObject(state, {
-        reqReviewsFinished: false
+        reqUserFinished: false
     });
 }
 

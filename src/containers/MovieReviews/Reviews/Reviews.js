@@ -94,8 +94,8 @@ const Reviews = (props) => {
       />
     ));
   } else {
-    if (props.reqFinished) {
-      if (props.error) {
+    if (props.reqReviewsFinished) {
+      if (props.reqReviewsError) {
         reviews = (
           <Alert severity="error">
             Se produjo un error al obtener las reviews
@@ -122,7 +122,9 @@ const mapStateToProps = (state) => {
     token: state.auth.token,
     isAuth: state.auth.token !== null,
     reviews: state.reviews.reviews,
-    reqUserReviewFinished: state.movieReviews.reqReviewsFinished
+    reqUserReviewFinished: state.movieReviews.reqUserFinished,
+    reqReviewsFinished: state.reviews.reqFinished,
+    reqReviewsError: state.reviews.error
   };
 };
 

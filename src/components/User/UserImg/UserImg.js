@@ -36,13 +36,17 @@ const useStyles = makeStyles((theme) => ({
 const UserImg = (props) => {
   const classes = useStyles();
 
+  let imageSrc = defaultUserImg;
+  if(props.imgUrl) {
+    imageSrc = props.imgUrl;
+  }
   return (
     <Box
       className={classes.boxStyles}
       onChange={props.changed}
       component="label"
     >
-      <Avatar src={props.imgUrl ? props.imgUrl : defaultUserImg} className={classes.avatarStyles} />
+      <Avatar src={imageSrc} className={classes.avatarStyles} />
       <Box className={classes.iconStyles}>
         <AddPhotoAlternateRoundedIcon />
       </Box>

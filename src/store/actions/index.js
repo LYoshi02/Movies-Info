@@ -33,5 +33,6 @@ export {
 } from "./reviews";
 
 export {
-    uploadImage
+    uploadImage,
+    fetchUserInfo
 } from "./user";

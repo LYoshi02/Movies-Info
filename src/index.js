@@ -12,6 +12,7 @@ import layoutReducer from "./store/reducers/layout";
 import infoPeliculaReducer from "./store/reducers/infoPelicula";
 import movieReviewsReducer from "./store/reducers/movieReviews";
 import reviewsReducer from "./store/reducers/reviews";
+import userReducer from "./store/reducers/user";
 import * as serviceWorker from './serviceWorker';
 
 const composeEnhancers = (process.env.NODE_ENV === 'development' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null) || compose;
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   layout: layoutReducer,
   infoPelicula: infoPeliculaReducer,
   movieReviews: movieReviewsReducer,
-  reviews: reviewsReducer
+  reviews: reviewsReducer,
+  user: userReducer
 });
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
