@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import * as actions from "../../store/actions/index";
 import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -19,11 +19,7 @@ const useStyles = makeStyles({
 const User = (props) => {
   const classes = useStyles();
 
-  const { onFetchUserInfo, userId } = props;
-  useEffect(() => {
-    onFetchUserInfo(userId);
-  }, [onFetchUserInfo, userId]);
-
+  const { userId, username, signupDate } = props;
   const checkFile = (event) => {
     const userImage = event.target.files[0];
     if (
@@ -32,7 +28,11 @@ const User = (props) => {
       userImage.size < 5000000
     ) {
       console.log(event.target.files[0]);
-      props.onUploadImage(userImage, props.userId, props.username, props.signupDate);
+      const userData = {
+        username,
+        signupDate
+      }
+      props.onUploadImage(userData, userImage, userId);
     } else {
       console.log("error al subir");
     }
@@ -57,19 +57,18 @@ const User = (props) => {
 
 const mapStateToProps = (state) => {
   return {
-    username: state.user.username,
-    userImgUrl: state.user.imgUrl,
-    signupDate: state.user.signupDate,
+    token: state.auth.token,
+    username: state.auth.username,
+    userImgUrl: state.auth.userImgUrl,
+    signupDate: state.auth.signupDate,
     userId: state.auth.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUploadImage: (userImage, userId, username, signupDate) =>
-      dispatch(actions.uploadImage(userImage, userId, username, signupDate)),
-    onLogout: () => dispatch(actions.authLogout()),
-    onFetchUserInfo: (userId) => dispatch(actions.fetchUserInfo(userId)),
+    onUploadImage: (userData, userImage, userId) => dispatch(actions.uploadImage(userData, userImage, userId)),
+    onLogout: () => dispatch(actions.authLogout())
   };
 };
 

@@ -1,10 +1,11 @@
 import React from "react";
 import { Box, Button, createMuiTheme } from "@material-ui/core";
 import { makeStyles, ThemeProvider } from "@material-ui/styles";
+import { red } from "@material-ui/core/colors";
 
+import { getLongDate } from "../../../shared/utility";
 import Detail from "../../UI/Detail/Detail";
 import UserImg from "../UserImg/UserImg";
-import { red } from "@material-ui/core/colors";
 
 const useStyles = makeStyles((theme) => ({
   infoStyles: {
@@ -48,7 +49,7 @@ const UserInfo = (props) => {
             {props.username}
           </Detail>
           <Detail name="fecha de registro" color="textSecondary">
-            {props.signupDate}
+            {getLongDate(props.signupDate)}
           </Detail>
         </Box>
         <ThemeProvider theme={redTheme}>

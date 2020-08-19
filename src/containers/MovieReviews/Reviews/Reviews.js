@@ -34,13 +34,13 @@ const Reviews = (props) => {
   const { onFetchReviews, reqUserReviewFinished } = props;
   useEffect(() => {
     onFetchReviews(props.match.params.id);
-  }, [onFetchReviews]);
+  }, [onFetchReviews, props.match.params.id]);
 
   useEffect(() => {
     if(reqUserReviewFinished) {
       onFetchReviews(props.match.params.id);
     }
-  }, [onFetchReviews, reqUserReviewFinished]);
+  }, [onFetchReviews, reqUserReviewFinished, props.match.params.id]);
 
   const reviewLikedHandler = (likesArray, reviewId, isLiked) => {
     if (props.isAuth) {
@@ -87,6 +87,7 @@ const Reviews = (props) => {
         content={rev.review}
         stars={rev.stars}
         username={rev.username}
+        imgUrl={rev.userImg}
         reviewLiked={(isLiked) =>
           reviewLikedHandler(rev.likes, rev.id, isLiked)
         }

@@ -5,7 +5,7 @@ export const updateObject = (oldObject, updatedProperties) => {
     }
 }
 
-export const getLongDate = (originalDate = new Date()) => {
+export const getLongDate = (originalDate) => {
     const dateOptions = { year: "numeric", month: "long", day: "numeric" };
     const formatedDate = new Date(originalDate).toLocaleDateString("es-ES", dateOptions);
     

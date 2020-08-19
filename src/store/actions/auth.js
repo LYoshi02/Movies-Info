@@ -1,6 +1,6 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
-import { getLongDate } from "../../shared/utility";
+import { storage } from "../../firebase";
 
 export const auth = (formData, isSignIn) => {
   return (dispatch) => {
@@ -28,7 +28,7 @@ export const auth = (formData, isSignIn) => {
         );
 
         if (isSignIn) {
-          dispatch(getExtraUserData(res.data.idToken, res.data.localId));
+          dispatch(fetchUserInfo(res.data.idToken, res.data.localId));
         } else {
           dispatch(
             createNewUsername(
@@ -58,7 +58,7 @@ export const checkAuthState = () => {
         dispatch(authLogout());
       } else {
         const userId = localStorage.getItem("userId");
-        dispatch(getExtraUserData(token, userId));
+        dispatch(fetchUserInfo(token, userId));
         dispatch(
           checkAuthTimeout(
             (expirationDate.getTime() - new Date().getTime()) / 1000
@@ -95,13 +95,17 @@ export const checkAuthTimeout = (expirationDate) => {
   };
 };
 
-export const getExtraUserData = (token, userId) => {
+export const fetchUserInfo = (token, userId) => {
   return (dispatch) => {
     axios
       .get(`https://movies-info-f83aa.firebaseio.com/users/${userId}.json`)
       .then((res) => {
+        console.log(res);
         dispatch(authSuccess(token, userId, res.data));
-      });
+      })
+      .catch(error => {
+        console.log(error);
+      })
   };
 };
 
@@ -109,7 +113,7 @@ export const createNewUsername = (token, userId, username) => {
   return (dispatch) => {
     const userData = {
       username,
-      signupDate: getLongDate()
+      signupDate: new Date()
     };
     const usernamesData = {
       userId,
@@ -141,5 +145,58 @@ export const setAuthRedirectPath = (redirectPath) => {
   return {
     type: actionTypes.SET_AUTH_REDIRECT_PATH,
     path: redirectPath
+  }
+}
+
+export const uploadImage = (userData, userImage, userId) => {
+  return (dispatch) => {
+    const uploadTask = storage
+      .ref(`users/${userData.username}/${userImage.name}`)
+      .put(userImage);
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {},
+      (error) => {
+        console.log(error);
+      },
+      () => {
+        storage
+          .ref(`users/${userData.username}`)
+          .child(userImage.name)
+          .getDownloadURL()
+          .then((url) => {
+            console.log(url);
+            dispatch(updateUserData(url, userData, userId));
+          });
+      }
+    );
+  };
+};
+
+export const updateUserData = (imgUrl, userData, userId) => {
+  return (dispatch) => {
+    const updatedUserData = {
+      ...userData,
+      imgUrl
+    };
+
+    axios
+      .put(
+        `https://movies-info-f83aa.firebaseio.com/users/${userId}.json`,
+        updatedUserData
+      )
+      .then((res) => {
+        dispatch(updateUserImage(imgUrl));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+};
+
+export const updateUserImage = (imgUrl) => {
+  return {
+    type: actionTypes.UPDATE_USER_IMAGE,
+    url: imgUrl
   }
 }

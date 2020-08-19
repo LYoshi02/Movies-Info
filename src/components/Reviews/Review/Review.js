@@ -1,10 +1,9 @@
 import React from 'react'
 import { Box, Card, CardHeader, Avatar, CardContent, Typography, CardActions, IconButton } from '@material-ui/core';
-import PersonRoundedIcon from '@material-ui/icons/PersonRounded';
 import ThumbUpRoundedIcon from '@material-ui/icons/ThumbUpRounded';
-// import ThumbDownRoundedIcon from '@material-ui/icons/ThumbDownRounded';
 import { makeStyles } from '@material-ui/styles';
 
+import defaultImg from "../../../assets/default-user-image.png";
 import Subheader from "./Subheader/Subheader";
 
 const useStyles = makeStyles({
@@ -32,9 +31,7 @@ const Review = (props) => {
         <Card className={classes.cardStyles}>
             <CardHeader 
                 avatar={
-                    <Avatar>
-                        <PersonRoundedIcon />
-                    </Avatar>
+                    <Avatar alt={props.username} src={props.imgUrl ? props.imgUrl : defaultImg} />
                 }
                 title={props.username}
                 subheader={<Subheader stars={props.stars} postDate={props.postDate} />}

@@ -24,15 +24,11 @@ export {
     auth,
     checkAuthState,
     setAuthRedirectPath,
-    authLogout
+    authLogout,
+    uploadImage
 } from "./auth";
 
 export {
     fetchMovieReviews,
     likeReview
 } from "./reviews";
-
-export {
-    uploadImage,
-    fetchUserInfo
-} from "./user";

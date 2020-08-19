@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import * as actions from "../../store/actions/index";
-import { getLongDate } from "../../shared/utility";
 import { Box, Typography } from "@material-ui/core";
 
 import Alert from "../../components/UI/Alert/Alert";
@@ -16,19 +15,13 @@ const MovieReviews = (props) => {
   const [userReviewId, setUserReviewId] = useState(null);
   const [fetchedUserReview, setFetchedUserReview] = useState(null);
 
-  const { onSetAuthRedirectPath, isAuth, userId, reviewStatus, reviews } = props;
+  const { onSetAuthRedirectPath, onChangeReviewStatus, isAuth, userId, reviewStatus, reviews } = props;
+  const { id } = props.match.params;
 
-  useEffect(() => {
-    onSetAuthRedirectPath("/");
-    if ((isAuth && userId) || reviewStatus === "edit") {
-      fetchUserReview();
-    }
-  }, [isAuth, userId, onSetAuthRedirectPath, reviewStatus, reviews]);
-
-  const fetchUserReview = () => {
+  const fetchUserReview = useCallback(() => {
     axios
       .get(
-        `https://movies-info-f83aa.firebaseio.com/reviews/${props.match.params.id}.json?orderBy="userId"&equalTo="${userId}"`
+        `https://movies-info-f83aa.firebaseio.com/reviews/${id}.json?orderBy="userId"&equalTo="${userId}"`
       )
       .then((res) => {
         if (Object.keys(res.data).length > 0) {
@@ -38,26 +31,31 @@ const MovieReviews = (props) => {
             setUserReviewInput(res.data[key].review);
             setUserStars(res.data[key].stars);
           }
-          props.onChangeReviewStatus("edit");
+          onChangeReviewStatus("edit");
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  };
+  }, [userId, id, onChangeReviewStatus]);
+
+  useEffect(() => {
+    onSetAuthRedirectPath("/");
+    if ((isAuth && userId) || reviewStatus === "edit") {
+      fetchUserReview();
+    }
+  }, [isAuth, userId, onSetAuthRedirectPath, reviewStatus, reviews, fetchUserReview]);
 
   const postReviewHandler = () => {
     if (isAuth) {
-      // TODO: put this Date functionality and the MainInfo component one in a shared function
-      // const options = { year: "numeric", month: "long", day: "numeric" };
       let userReview = {
-        // postDate: new Date().toLocaleDateString("es-ES", options),
-        postDate: getLongDate(),
+        postDate: new Date(),
         review: userReviewInput.trim(),
         stars: userStars,
         likes: null,
         username: props.username,
         userId: userId,
+        userImg: props.userImgUrl
       };
 
       if (reviewStatus === "edit") {
@@ -135,6 +133,7 @@ const mapStateToProps = (state) => {
     reviewStatus: state.movieReviews.reviewStatus,
     username: state.auth.username,
     userId: state.auth.userId,
+    userImgUrl: state.auth.userImgUrl,
     isAuth: state.auth.token !== null,
     token: state.auth.token,
     reviews: state.reviews.reviews

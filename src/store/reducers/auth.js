@@ -6,6 +6,7 @@ const initialState = {
     token: null,
     username: null,
     userImgUrl: null,
+    signupDate: null,
     redirectPath: "/"
     // error: null,
     // loading: null
@@ -16,7 +17,8 @@ const authSuccess = (state, action) => {
         userId: action.userId,
         token: action.token,
         username: action.userData.username,
-        userImgUrl: action.userData.imageUrl
+        userImgUrl: action.userData.imgUrl,
+        signupDate: action.userData.signupDate
     })
 }
 
@@ -26,6 +28,7 @@ const authLogout = (state, action) => {
         token: null,
         username: null,
         userImgUrl: null,
+        signupDate: null,
         redirectPath: "/"
     })
 }
@@ -36,11 +39,18 @@ const setAuthRedirectPath = (state, action) => {
     })
 }
 
+const updateUserImage = (state, action) => {
+    return updateObject(state, {
+        userImgUrl: action.url
+    })
+}
+
 const reducer = (state = initialState, action) => {
     switch(action.type) {
         case actionTypes.AUTH_SUCCESS: return authSuccess(state, action);
         case actionTypes.AUTH_LOGOUT: return authLogout(state, action);
         case actionTypes.SET_AUTH_REDIRECT_PATH: return setAuthRedirectPath(state, action);
+        case actionTypes.UPDATE_USER_IMAGE: return updateUserImage(state, action);
         default: return state;
     }
 }

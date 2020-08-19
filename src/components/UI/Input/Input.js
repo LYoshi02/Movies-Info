@@ -83,6 +83,7 @@ const CustomInput = (props) => {
           </FormControl>
           );
       break;
+      default: return null;
   }
 
   return inputElement;
