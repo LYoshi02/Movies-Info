@@ -1,22 +1,36 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
+import { Button } from "@material-ui/core";
 
 import Casting from "../../components/InfoPelicula/Casting/Casting";
 import Heading from "../../components/UI/Heading/Heading";
 import MainInfo from "../../components/InfoPelicula/MainInfo/MainInfo";
+import MovieVideos from "../../components/InfoPelicula/MovieVideos/MovieVideos";
 import Reviews from "../MovieReviews/Reviews/Reviews";
 
 import classes from "./InfoPelicula.module.css";
-import { Button } from "@material-ui/core";
-import { connect } from "react-redux";
 
 const InfoPelicula = (props) => {
+  const [videoKey, setVideoKey] = useState("");
+
   const { id } = props.match.params;
-  const { onFetchMovieInfo, info, cast } = props;
+  const { onFetchMovieInfo, info, cast, videos } = props;
 
   useEffect(() => {
     onFetchMovieInfo(id);
   }, [id, onFetchMovieInfo]);
+
+  useEffect(() => {
+    if(videos && videos.length > 0) {
+      setVideoKey(videos[0].key);
+    }
+  }, [videos]);
+
+  const changeVideoKey = (key) => {
+    setVideoKey(key);
+  }
+
 
   let component = <p>Cargando</p>;
   if (info && cast) {
@@ -30,8 +44,13 @@ const InfoPelicula = (props) => {
         </div>
 
         <div>
+          <Heading type="info-tertiary">Videos:</Heading>
+          <MovieVideos videos={videos} changeKey={changeVideoKey} videoKey={videoKey} />
+        </div>
+
+        <div>
           <Heading type="info-tertiary">Reseñas:</Heading>
-          <Reviews />
+          <Reviews lessReviews />
           <Button
             color="secondary"
             onClick={() => props.history.push(`/pelicula/reviews/${id}`)}
@@ -49,7 +68,8 @@ const InfoPelicula = (props) => {
 const mapStateToProps = (state) => {
   return {
     info: state.infoPelicula.info,
-    cast: state.infoPelicula.cast
+    cast: state.infoPelicula.cast,
+    videos: state.infoPelicula.videos
   };
 };
 

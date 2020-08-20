@@ -75,11 +75,21 @@ const Reviews = (props) => {
   );
   let starRate = null;
   if (props.reviews) {
-    const reviewsArray = [];
+    let reviewsArray = [];
     for (let key in props.reviews) {
       reviewsArray.push({ ...props.reviews[key], id: key });
     }
-    reviewsArray.sort((a, b) => b.likes - a.likes);
+    reviewsArray.sort((a, b) => {
+      let likesA = 0, likesB = 0;
+      if(a.likes) {
+        likesA = a.likes.length;
+      }
+      if(b.likes) {
+        likesB = b.likes.length;
+      }
+
+      return likesB - likesA
+    });
 
     const starSum = reviewsArray.reduce((accumulator, currentValue) => {
       return accumulator + currentValue.stars;
@@ -89,6 +99,11 @@ const Reviews = (props) => {
     starRate = (
       <StarRate rate={starAverage} amount={reviewsArray.length} />
     );
+
+    if(props.lessReviews) {
+      reviewsArray = reviewsArray.slice(0, 2);
+    }
+
     reviews = reviewsArray.map((rev) => (
       <Review
         key={rev.id}

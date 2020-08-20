@@ -3,20 +3,23 @@ import { updateObject } from "../../shared/utility";
 
 const initialState = {
     info: null,
-    cast: null
+    cast: null,
+    videos: null
 }
 
 const fecthInfoInit = (state, action) => {
     return updateObject(state, {
         info: null,
-        cast: null
+        cast: null,
+        videos: null
     })
 }
 
 const fetchInfoSuccess = (state, action) => {
     return updateObject(state, {
         info: action.info,
-        cast: action.cast
+        cast: action.cast,
+        videos: action.videos
     });
 }
 
