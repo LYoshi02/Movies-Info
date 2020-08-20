@@ -1,14 +1,13 @@
 import React from "react";
-import { makeStyles, Box, Button, Typography } from "@material-ui/core";
+import { makeStyles, Box, Button } from "@material-ui/core";
 
 import Heading from "../../UI/Heading/Heading";
 import Input from "../../UI/Input/Input";
-import SocialMedias from "../SocialMedias/SocialMedias";
 
 const useStyles = makeStyles((theme) => ({
   formStyles: {
     backgroundColor: "rgba(255,255,255,.95)",
-    padding: "5rem 8rem",
+    padding: "6rem 8rem",
     width: "55rem",
     margin: "5rem auto",
     borderRadius: "5px",
@@ -40,7 +39,7 @@ const AuthForm = (props) => {
         />
       </Box>
 
-      <Box m="2.5rem 0 5rem 0">
+      <Box mt="2.5rem">
         {
           props.inputs.map(input => (
             <Input
@@ -64,13 +63,6 @@ const AuthForm = (props) => {
         >
           {props.isSignIn ? "Iniciar Sesión" : "Crear Cuenta"}
         </Button>
-      </Box>
-
-      <Box textAlign="center">
-        <Typography className={classes.typographyStyles}>
-          o continuar con
-        </Typography>
-        <SocialMedias />
       </Box>
     </form>
   );
