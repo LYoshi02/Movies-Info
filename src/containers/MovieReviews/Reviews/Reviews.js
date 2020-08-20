@@ -12,6 +12,7 @@ import {
 import Alert from "@material-ui/lab/Alert";
 
 import Review from "../../../components/Reviews/Review/Review";
+import StarRate from "../../../components/Reviews/StarRate/StarRate";
 
 const useStyles = makeStyles({
   spinnerStyles: {
@@ -72,6 +73,7 @@ const Reviews = (props) => {
       <CircularProgress color="secondary" />
     </div>
   );
+  let starRate = null;
   if (props.reviews) {
     const reviewsArray = [];
     for (let key in props.reviews) {
@@ -79,6 +81,14 @@ const Reviews = (props) => {
     }
     reviewsArray.sort((a, b) => b.likes - a.likes);
 
+    const starSum = reviewsArray.reduce((accumulator, currentValue) => {
+      return accumulator + currentValue.stars;
+    }, 0);
+    const starAverage = starSum / reviewsArray.length;
+
+    starRate = (
+      <StarRate rate={starAverage} amount={reviewsArray.length} />
+    );
     reviews = reviewsArray.map((rev) => (
       <Review
         key={rev.id}
@@ -114,7 +124,12 @@ const Reviews = (props) => {
     }
   }
 
-  return <Box className={classes.boxStyles}>{reviews}</Box>;
+  return(
+    <Box className={classes.boxStyles}>
+      {starRate}
+      {reviews}
+    </Box>
+  );
 };
 
 const mapStateToProps = (state) => {

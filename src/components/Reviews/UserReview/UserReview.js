@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
       marginBottom: "1.5rem",
     },
   },
+  starsStyles: {
+    color: "var(--color-stars)"
+  },
 }));
 
 const UserReview = (props) => {
@@ -67,6 +70,7 @@ const UserReview = (props) => {
         value={props.stars}
         onChange={props.starsChanged}
         name="user-stars"
+        classes={{ root: classes.starsStyles }}
       />
       <Input
         multiline

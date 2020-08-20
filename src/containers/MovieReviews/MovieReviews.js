@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import * as actions from "../../store/actions/index";
-import { Box, Typography } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 import Alert from "../../components/UI/Alert/Alert";
 import UserReview from "../../components/Reviews/UserReview/UserReview";
@@ -84,18 +84,6 @@ const MovieReviews = (props) => {
     }
   };
 
-  let reviewsAmount = "";
-  if (reviews) {
-    const amount = Object.keys(reviews).length;
-    if (amount === 0) {
-      reviewsAmount = "0 Reviews";
-    } else if (amount === 1) {
-      reviewsAmount = "1 Review";
-    } else {
-      reviewsAmount = `${amount} Reviews`;
-    }
-  }
-
   return (
     <Box p={{ xs: "1.25rem", sm: "2rem" }}>
       <UserReview
@@ -110,7 +98,6 @@ const MovieReviews = (props) => {
 
       <Heading type="secondary" color="textPrimary">
         Todas las Reviews
-        <Typography>{reviewsAmount}</Typography>
       </Heading>
 
       <Reviews />
