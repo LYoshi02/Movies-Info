@@ -12,6 +12,14 @@
     }
 }
 
-.Cast {
+.Cast,
+.SimilarMovies {
     width: calc(100vw - 18px); /* To take on account the scrollbar width when seting vw */
+}
+
+.MoviesWrapper {
+    white-space: nowrap;
+    max-width: calc(100vw - 18px);
+    overflow-x: auto;
+    overflow-y: hidden;
 }

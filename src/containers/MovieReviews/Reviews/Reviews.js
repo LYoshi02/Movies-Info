@@ -6,20 +6,14 @@ import {
   Box,
   makeStyles,
   CircularProgress,
-  Paper,
-  Typography,
 } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
 
+import InfoMessage from "../../../components/UI/InfoMessage/InfoMessage";
 import Review from "../../../components/Reviews/Review/Review";
 import StarRate from "../../../components/Reviews/StarRate/StarRate";
 
 const useStyles = makeStyles({
   spinnerStyles: {
-    textAlign: "center",
-  },
-  paperStyles: {
-    padding: "2rem",
     textAlign: "center",
   },
   boxStyles: {
@@ -123,17 +117,17 @@ const Reviews = (props) => {
     if (props.reqReviewsFinished) {
       if (props.reqReviewsError) {
         reviews = (
-          <Alert severity="error">
-            Se produjo un error al obtener las reviews
-          </Alert>
+          <InfoMessage 
+            status="error"
+            message="Se produjo un error al obtener las reviews"
+          />
         );
       } else {
         reviews = (
-          <Paper className={classes.paperStyles}>
-            <Typography color="textSecondary">
-              No se encontraron reviews para esta pelicula
-            </Typography>
-          </Paper>
+          <InfoMessage 
+            status="not-found"
+            message="No se encontraron reviews para esta pelicula"
+          />
         );
       }
     }

@@ -21,7 +21,7 @@ const Estrenos = (props) => {
           titulo={pelicula.title}
           posterUrl={pelicula.poster_path}
           peliculaId={pelicula.id}
-          estreno
+          type="estreno"
         />
       ))}
       </Carousel>

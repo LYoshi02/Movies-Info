@@ -2,44 +2,54 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Card, CardMedia, CardContent, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
+import clsx from 'clsx';
 
 import imgNotFound from "../../../assets/image_not_found.png";
 
 const useStyles = makeStyles({
   cardStyles: (props) => {
     return {
-      backgroundColor: props.estreno ? "rgba(255,255,255,.85)" : "transparent",
-      padding: props.estreno ? "1rem" : "0",
+      backgroundColor: props.type === "estreno" ? "rgba(255,255,255,.85)" : "transparent",
       border: "none",
       boxShadow: "none",
-      width: props.estreno ? "25rem" : null,
-      marginRight: props.estreno ? "2rem" : null,
       transition: "all .2s ease-out",
       backfaceVisibility: "visible",
-      minHeight: props.estreno ? "40rem" : null,
       "&:hover": {
         cursor: "pointer",
         transform: "scale(1.01)"
       },
     };
   },
+  cardEstrenoStyles: {
+    width: "25rem",
+    marginRight: "2rem",
+    minHeight: "40rem",
+    padding: "1rem",
+  },
+  cardSimilarMoviesStyles: {
+    width: "20rem",
+    display: "inline-block",
+    marginRight: "2rem",
+    whiteSpace: "normal",
+    verticalAlign: "top",
+  },
   mediaStyles: (props) => {
     return {
-      height: props.estreno ? "30rem" : "45rem",
+      height: props.type === "estreno" || props.type === "similar-movies" ? "30rem" : "45rem",
       borderRadius: "2px",
       backgroundSize: "cover"
     };
   },
   cardContentStyles: (props) => {
       return {
-        padding: props.estreno ? "1rem 0 0 0 !important" : "1rem 0 !important"
+        padding: props.type === "estreno" ? "1rem 0 0 0 !important" : "1rem 0 !important"
       }
   },
   typographyStyles: (props) => {
     return {
       textAlign: "center",
       fontWeight: "bold",
-      color: props.estreno ? "var(--color-gris-oscuro)" : "#fff",
+      color: props.type === "estreno" ? "var(--color-gris-oscuro)" : "#fff",
     };
   },
 });
@@ -50,7 +60,11 @@ const Pelicula = (props) => {
 
   return (
     <Link to={`/pelicula/${props.peliculaId}`} style={{textDecoration: "none"}}>
-      <Card className={classes.cardStyles}>
+      <Card className={clsx(
+        classes.cardStyles,
+        {[classes.cardEstrenoStyles]: props.type === "estreno"},
+        {[classes.cardSimilarMoviesStyles]: props.type === "similar-movies"}
+      )}>
         <CardMedia
           image={mediaImage}
           title={props.titulo}

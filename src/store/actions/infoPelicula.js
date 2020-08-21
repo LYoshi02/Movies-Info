@@ -3,7 +3,7 @@ import * as actionTypes from "./actionTypes";
 
 export const fetchMovieInfo = (movieId) => {
   return (dispatch) => {
-    dispatch(fetchInfoInit);
+    dispatch(fetchInfoInit());
     axios
       .all([
         axios.get(
@@ -14,15 +14,19 @@ export const fetchMovieInfo = (movieId) => {
         ),
         axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es`
+        ),
+        axios.get(
+          `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1`
         )
       ])
       .then(
-        axios.spread((infoRes, castRes, videosRes) => {
-          console.log(videosRes);
+        axios.spread((infoRes, castRes, videosRes, similarMoviesRes) => {
+          console.log(similarMoviesRes);
           const movieInfo = {
             info: infoRes.data,
             cast: castRes.data.cast.splice(0, 8),
-            videos: videosRes.data.results
+            videos: videosRes.data.results,
+            similarMovies: similarMoviesRes.data.results.splice(0, 8)
           };
           dispatch(fetchInfoSuccess(movieInfo));
         })
@@ -44,6 +48,7 @@ export const fetchInfoSuccess = (movieInfo) => {
     type: actionTypes.FETCH_INFO_SUCCESS,
     info: movieInfo.info,
     cast: movieInfo.cast,
-    videos: movieInfo.videos
+    videos: movieInfo.videos,
+    similarMovies: movieInfo.similarMovies
   };
 };
