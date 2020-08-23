@@ -2,7 +2,7 @@ import React from "react";
 import Pelicula from "../../Peliculas/Pelicula/Pelicula";
 import InfoMessage from "../../UI/InfoMessage/InfoMessage";
 
-const SimilarMovies = (props) => {
+const RecommendedMovies = (props) => {
   let movies = null;
   if (props.movies.length > 0) {
     movies = props.movies.map((movie) => (
@@ -26,4 +26,4 @@ const SimilarMovies = (props) => {
   return movies;
 };
 
-export default SimilarMovies;
+export default RecommendedMovies;

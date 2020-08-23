@@ -16,17 +16,17 @@ export const fetchMovieInfo = (movieId) => {
           `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/similar?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1`
+          `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1`
         )
       ])
       .then(
-        axios.spread((infoRes, castRes, videosRes, similarMoviesRes) => {
-          console.log(similarMoviesRes);
+        axios.spread((infoRes, castRes, videosRes, recommendedMoviesRes) => {
+          console.log(recommendedMoviesRes);
           const movieInfo = {
             info: infoRes.data,
             cast: castRes.data.cast.splice(0, 8),
             videos: videosRes.data.results,
-            similarMovies: similarMoviesRes.data.results.splice(0, 8)
+            recommendedMovies: recommendedMoviesRes.data.results.splice(0, 8)
           };
           dispatch(fetchInfoSuccess(movieInfo));
         })
@@ -49,6 +49,6 @@ export const fetchInfoSuccess = (movieInfo) => {
     info: movieInfo.info,
     cast: movieInfo.cast,
     videos: movieInfo.videos,
-    similarMovies: movieInfo.similarMovies
+    recommendedMovies: movieInfo.recommendedMovies
   };
 };

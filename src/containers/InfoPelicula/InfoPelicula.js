@@ -7,8 +7,8 @@ import Casting from "../../components/InfoPelicula/Casting/Casting";
 import Heading from "../../components/UI/Heading/Heading";
 import MainInfo from "../../components/InfoPelicula/MainInfo/MainInfo";
 import MovieVideos from "../../components/InfoPelicula/MovieVideos/MovieVideos";
+import RecommendedMovies from "../../components/InfoPelicula/RecommendedMovies/RecommendedMovies";
 import Reviews from "../MovieReviews/Reviews/Reviews";
-import SimilarMovies from "../../components/InfoPelicula/SimilarMovies/SimilarMovies";
 
 import classes from "./InfoPelicula.module.css";
 
@@ -16,7 +16,7 @@ const InfoPelicula = (props) => {
   const [videoKey, setVideoKey] = useState("");
 
   const { id } = props.match.params;
-  const { onFetchMovieInfo, info, cast, videos, similarMovies } = props;
+  const { onFetchMovieInfo, info, cast, videos, recommendedMovies } = props;
 
   useEffect(() => {
     onFetchMovieInfo(id);
@@ -33,7 +33,7 @@ const InfoPelicula = (props) => {
   };
 
   let component = <p>Cargando</p>;
-  if (info && cast && videos && similarMovies) {
+  if (info && cast && videos && recommendedMovies) {
     component = (
       <div className={classes.InfoPelicula}>
         <MainInfo info={info} />
@@ -63,10 +63,10 @@ const InfoPelicula = (props) => {
           </Button>
         </div>
 
-        <div className={classes.SimilarMovies}>
+        <div className={classes.RecommendedMovies}>
           <Heading type="info-tertiary">Películas Similares:</Heading>
           <div className={classes.MoviesWrapper}>
-            <SimilarMovies movies={similarMovies} />
+            <RecommendedMovies movies={recommendedMovies} />
           </div>
         </div>
       </div>
@@ -81,7 +81,7 @@ const mapStateToProps = (state) => {
     info: state.infoPelicula.info,
     cast: state.infoPelicula.cast,
     videos: state.infoPelicula.videos,
-    similarMovies: state.infoPelicula.similarMovies
+    recommendedMovies: state.infoPelicula.recommendedMovies
   };
 };
 

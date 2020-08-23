@@ -5,7 +5,7 @@ const initialState = {
     info: null,
     cast: null,
     videos: null,
-    similarMovies: null
+    recommendedMovies: null
 }
 
 const fecthInfoInit = (state, action) => {
@@ -13,7 +13,7 @@ const fecthInfoInit = (state, action) => {
         info: null,
         cast: null,
         videos: null,
-        similarMovies: null
+        recommendedMovies: null
     })
 }
 
@@ -22,7 +22,7 @@ const fetchInfoSuccess = (state, action) => {
         info: action.info,
         cast: action.cast,
         videos: action.videos,
-        similarMovies: action.similarMovies
+        recommendedMovies: action.recommendedMovies
     });
 }
 

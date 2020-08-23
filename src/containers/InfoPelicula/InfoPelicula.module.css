@@ -13,7 +13,7 @@
 }
 
 .Cast,
-.SimilarMovies {
+.RecommendedMovies {
     width: calc(100vw - 18px); /* To take on account the scrollbar width when seting vw */
 }
 
