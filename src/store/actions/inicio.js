@@ -6,7 +6,7 @@ export const initMovies = (startPage) => {
     axios
       .all([
         axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=${startPage}`
+          `https://api.themoviedb.org/3/movie/popular?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=${startPage}&region=AR`
         ),
         axios.get(
           "https://api.themoviedb.org/3/movie/upcoming?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1"

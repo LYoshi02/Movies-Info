@@ -40,6 +40,10 @@ const MovieReviews = (props) => {
   }, [userId, id, onChangeReviewStatus]);
 
   useEffect(() => {
+    onChangeReviewStatus("create");
+  }, [onChangeReviewStatus]);
+
+  useEffect(() => {
     onSetAuthRedirectPath("/");
     if ((isAuth && userId) || reviewStatus === "edit") {
       fetchUserReview();
