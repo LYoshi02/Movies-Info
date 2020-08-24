@@ -1,0 +1,2 @@
+export const FIREBASE_KEY = process.env.REACT_APP_FIREBASE_API_KEY;
+export const MOVIE_DATABASE_KEY = process.env.REACT_APP_MOVIE_DATABASE_API_KEY;

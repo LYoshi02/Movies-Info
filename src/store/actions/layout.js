@@ -1,12 +1,14 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
 
+import { MOVIE_DATABASE_KEY } from "../../environment-variables";
+
 export const searchMovie = (searchValue) => {
   return (dispatch) => {
     dispatch(searchMovieStart());
     axios
       .get(
-        `https://api.themoviedb.org/3/search/movie?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&query=${searchValue}&page=1&include_adult=false`
+        `https://api.themoviedb.org/3/search/movie?api_key=${MOVIE_DATABASE_KEY}&language=es&query=${searchValue}&page=1&include_adult=false`
       )
       .then((res) => {
         dispatch(searchMovieSuccess(res.data.results))

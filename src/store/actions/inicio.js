@@ -1,15 +1,17 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 
+import { MOVIE_DATABASE_KEY } from "../../environment-variables";
+
 export const initMovies = (startPage) => {
   return (dispatch) => {
     axios
       .all([
         axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=${startPage}&region=US`
+          `https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_DATABASE_KEY}&language=es&page=${startPage}&region=US`
         ),
         axios.get(
-          "https://api.themoviedb.org/3/movie/upcoming?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1"
+          `https://api.themoviedb.org/3/movie/upcoming?api_key=${MOVIE_DATABASE_KEY}&language=es&page=1`
         ),
       ])
       .then(
@@ -40,7 +42,7 @@ export const changePage = (newPage) => {
   return dispatch => {
     axios
       .get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=${newPage}&region=US`
+        `https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_DATABASE_KEY}&language=es&page=${newPage}&region=US`
       )
       .then((res) => {
         dispatch(changePageSuccess(res.data.results, newPage));

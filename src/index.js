@@ -26,6 +26,7 @@ const rootReducer = combineReducers({
 
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk)));
 
+
 ReactDOM.render(
   <Provider store={store}>
     <React.Fragment>

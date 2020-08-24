@@ -1,22 +1,24 @@
 import axios from "axios";
 import * as actionTypes from "./actionTypes";
 
+import { MOVIE_DATABASE_KEY } from "../../environment-variables";
+
 export const fetchMovieInfo = (movieId) => {
   return (dispatch) => {
     dispatch(fetchInfoInit());
     axios
       .all([
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es`
+          `https://api.themoviedb.org/3/movie/${movieId}?api_key=${MOVIE_DATABASE_KEY}&language=es`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es`
+          `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${MOVIE_DATABASE_KEY}&language=es`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es`
+          `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${MOVIE_DATABASE_KEY}&language=es`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=18499f6e11c3ac0d1100af6fdfcc3ec6&language=es&page=1`
+          `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${MOVIE_DATABASE_KEY}&language=es&page=1`
         )
       ])
       .then(

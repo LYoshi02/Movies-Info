@@ -2,6 +2,8 @@ import axios from "axios";
 import * as actionTypes from "./actionTypes";
 import { storage } from "../../firebase";
 
+import { FIREBASE_KEY } from "../../environment-variables";
+
 export const auth = (formData, isSignIn) => {
   return (dispatch) => {
     const authData = {
@@ -11,10 +13,10 @@ export const auth = (formData, isSignIn) => {
     };
 
     let url =
-      "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8";
+      `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${FIREBASE_KEY}`;
     if (isSignIn) {
       url =
-        "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAxKAMCrPe4V49zFR74oZBQCXQepERUXO8";
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${FIREBASE_KEY}`;
     }
 
     axios
