@@ -64,7 +64,7 @@ const InfoPelicula = (props) => {
         </div>
 
         <div className={classes.RecommendedMovies}>
-          <Heading type="info-tertiary">Películas Similares:</Heading>
+          <Heading type="info-tertiary">Películas Recomendadas:</Heading>
           <div className={classes.MoviesWrapper}>
             <RecommendedMovies movies={recommendedMovies} />
           </div>

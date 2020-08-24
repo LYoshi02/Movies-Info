@@ -8,7 +8,7 @@ export const searchMovie = (searchValue) => {
     dispatch(searchMovieStart());
     axios
       .get(
-        `https://api.themoviedb.org/3/search/movie?api_key=${MOVIE_DATABASE_KEY}&language=es&query=${searchValue}&page=1&include_adult=false`
+        `https://api.themoviedb.org/3/search/movie?api_key=${MOVIE_DATABASE_KEY}&language=es-MX&query=${searchValue}&page=1&include_adult=false`
       )
       .then((res) => {
         dispatch(searchMovieSuccess(res.data.results))

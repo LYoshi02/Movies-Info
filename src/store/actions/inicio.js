@@ -8,10 +8,10 @@ export const initMovies = (startPage) => {
     axios
       .all([
         axios.get(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_DATABASE_KEY}&language=es&page=${startPage}&region=US`
+          `https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_DATABASE_KEY}&language=es-MX&page=${startPage}&region=US`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/upcoming?api_key=${MOVIE_DATABASE_KEY}&language=es&page=1`
+          `https://api.themoviedb.org/3/movie/upcoming?api_key=${MOVIE_DATABASE_KEY}&language=es-MX&page=1`
         ),
       ])
       .then(
@@ -42,7 +42,7 @@ export const changePage = (newPage) => {
   return dispatch => {
     axios
       .get(
-        `https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_DATABASE_KEY}&language=es&page=${newPage}&region=US`
+        `https://api.themoviedb.org/3/movie/popular?api_key=${MOVIE_DATABASE_KEY}&language=es-MX&page=${newPage}&region=US`
       )
       .then((res) => {
         dispatch(changePageSuccess(res.data.results, newPage));

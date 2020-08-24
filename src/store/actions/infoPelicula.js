@@ -9,16 +9,16 @@ export const fetchMovieInfo = (movieId) => {
     axios
       .all([
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}?api_key=${MOVIE_DATABASE_KEY}&language=es`
+          `https://api.themoviedb.org/3/movie/${movieId}?api_key=${MOVIE_DATABASE_KEY}&language=es-MX`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${MOVIE_DATABASE_KEY}&language=es`
+          `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=${MOVIE_DATABASE_KEY}&language=es-MX`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${MOVIE_DATABASE_KEY}&language=es`
+          `https://api.themoviedb.org/3/movie/${movieId}/videos?api_key=${MOVIE_DATABASE_KEY}&language=es-MX`
         ),
         axios.get(
-          `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${MOVIE_DATABASE_KEY}&language=es&page=1`
+          `https://api.themoviedb.org/3/movie/${movieId}/recommendations?api_key=${MOVIE_DATABASE_KEY}&language=es-MX&page=1`
         )
       ])
       .then(
