@@ -46,7 +46,7 @@ const CustomInput = (props) => {
             {...props.inputConfig}
           />
           <FormHelperText>
-            {props.error.isError ? props.error.info : null}
+            {props.error.isError ? props.error.message : null}
           </FormHelperText>
         </FormControl>
       );
@@ -78,7 +78,7 @@ const CustomInput = (props) => {
               }
             />
             <FormHelperText>
-              {props.error.isError ? props.error.info : null}
+              {props.error.isError ? props.error.message : null}
             </FormHelperText>
           </FormControl>
           );

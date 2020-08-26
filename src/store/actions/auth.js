@@ -120,6 +120,8 @@ export const createNewUsername = (token, userId, username) => {
     const usernamesData = {
       userId,
     };
+    const lowercaseUsername = username.toLowerCase();
+    
     axios
       .all([
         axios.put(
@@ -127,13 +129,12 @@ export const createNewUsername = (token, userId, username) => {
           userData
         ),
         axios.put(
-          `https://movies-info-f83aa.firebaseio.com/usernames/${username}.json`,
+          `https://movies-info-f83aa.firebaseio.com/usernames/${lowercaseUsername}.json`,
           usernamesData
         ),
       ])
       .then(
         axios.spread((usersRes, usernamesRes) => {
-          // console.log(usersRes, usernamesRes);
           dispatch(authSuccess(token, userId, usersRes.data));
         })
       )

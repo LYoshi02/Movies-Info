@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/index";
-import { makeStyles } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
+import { updateObject, checkValidity } from "../../shared/utility";
 import AuthForm from "../../components/Auth/AuthForm/AuthForm";
 
-const useStyles = makeStyles((theme) => ({
-  containerStyles: {
-    [theme.breakpoints.down("xs")]: {
-      padding: "0 1rem",
-    },
-  },
-}));
-
 const Auth = (props) => {
-  const classes = useStyles();
   const [isSignIn, setIsSignIn] = useState(true);
+  const [formIsValid, setFormIsValid] = useState(false);
   const [authInputs, setAuthInputs] = useState({
     email: {
       elementType: "auth-input",
@@ -24,26 +18,35 @@ const Auth = (props) => {
         type: "email",
         required: true
       },
-      value: "test@test.com",
+      value: "",
       error: {
         isError: false,
         label: "Error",
-        info: "Se ha producido un error"
+        message: ""
       },
+      validation: {
+        required: true,
+        isEmail: true
+      },
+      valid: false
     },
     password: {
       elementType: "auth-password-input",
       elementConfig:{
-        label:"Contrasena",
+        label:"Contraseña",
         type: "password",
         required: true
       },
-      value: "123456",
+      value: "",
       error: {
         isError: false,
         label: "Error",
-        info: "Se ha producido un error"
-      }
+        message: ""
+      },
+      validation: {
+        minLength: 8
+      },
+      valid: false
     },
     username: {
       elementType: "auth-input",
@@ -52,12 +55,18 @@ const Auth = (props) => {
         type: "text",
         required: true
       },
-      value: "MyUsername",
+      value: "",
       error: {
         isError: false,
         label: "Error",
-        info: "Se ha producido un error"
+        message: ""
       },
+      validation: {
+        unique: true,
+        minLength: 4,
+        required: true
+      },
+      valid: false
     },
   })
 
@@ -93,23 +102,69 @@ const Auth = (props) => {
   }
 
   const inputValueHandler = (event, inputId) => {
-    setAuthInputs({
-      ...authInputs,
+    const inputMessage = checkValidity(event.target.value, authInputs[inputId].validation);
+    const inputErrors = updateObject(authInputs[inputId].error, {
+      isError: inputMessage !== "success",
+      message: (inputMessage !== "success") ? inputMessage : ""
+    });
+
+    const updatedInputs = updateObject(authInputs, {
       [inputId]: {
         ...authInputs[inputId],
-        value: event.target.value
+        value: event.target.value,
+        valid: inputMessage === "success",
+        error: {...inputErrors}
       }
-    })
+    });
+
+    let validForm = true;
+    for(let inputName in updatedInputs) {
+      validForm = updatedInputs[inputName].valid && validForm;
+    }
+    
+    setFormIsValid(validForm);
+    setAuthInputs(updatedInputs);
   }
 
-  const submitFormHandler = (event) => {
-    event.preventDefault();
-    const formData = {
-      email: authInputs.email.value,
-      password: authInputs.password.value,
-      username: authInputs.username.value
+  const checkUniqueUsername = async () => {
+    let isUnique = false;
+    const lowercaseUsername = authInputs.username.value.toLowerCase();
+    await axios.get(`https://movies-info-f83aa.firebaseio.com/usernames/${lowercaseUsername}.json`)
+    .then(res => {
+      console.log(res);
+      isUnique = res.data === null;
+    });
+
+    if(!isUnique) {
+      setInputError("username", "Este usuario ya está ocupado");
     }
-    props.onAuth(formData, isSignIn);
+    return isUnique;
+  }
+
+  const setInputError = (inputId, errorMessage) => {
+    const inputErrors = updateObject(authInputs[inputId].error, {
+      isError: true,
+      message: errorMessage
+    });
+    const updatedInputs = updateObject(authInputs, {
+      [inputId]: {
+        ...authInputs[inputId],
+        error: {...inputErrors}
+      }
+    });
+    setAuthInputs(updatedInputs);
+  }
+
+  const submitFormHandler = async (event) => {
+    event.preventDefault();
+    if(isSignIn || (await checkUniqueUsername() && formIsValid)) {
+      const formData = {
+        email: authInputs.email.value,
+        password: authInputs.password.value,
+        username: authInputs.username.value
+      }
+      props.onAuth(formData, isSignIn);
+    }
   }
 
   const formInputs = [];
@@ -122,7 +177,7 @@ const Auth = (props) => {
   }
 
   return (
-    <div className={classes.containerStyles}>
+    <Box p={{xs: "0 1rem"}}>
       <AuthForm
         isSignIn={isSignIn}
         inputs={formInputs}
@@ -130,7 +185,7 @@ const Auth = (props) => {
         toggleInput={toggleInputHandler}
         submitForm={submitFormHandler}
       />
-    </div>
+    </Box>
   );
 };
 

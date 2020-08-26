@@ -46,7 +46,7 @@ const AuthForm = (props) => {
               key={input.id}
               type={input.elementType}
               inputConfig={input.elementConfig}
-              error={input.error}
+              error={props.isSignIn ? false : input.error}
               changed={(event) => props.changeInputValue(event, input.id)}
               value={input.value}
               toggle={() => props.toggleInput(input.id)}
