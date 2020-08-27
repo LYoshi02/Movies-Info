@@ -25,7 +25,8 @@ export {
     checkAuthState,
     setAuthRedirectPath,
     authLogout,
-    uploadImage
+    uploadImage,
+    saveMovie
 } from "./auth";
 
 export {

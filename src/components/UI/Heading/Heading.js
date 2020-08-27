@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Link } from "react-router-dom";
 import { indigo } from "@material-ui/core/colors";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   headingSecondaryStyles: {
     marginBottom: "2rem",
     fontWeight: "bold",
@@ -14,7 +14,7 @@ const useStyles = makeStyles({
     borderLeft: "1rem solid #40BAD5",
     paddingLeft: ".5rem",
     textTransform: "uppercase",
-    color: "#fff",
+    color: "#fff"
   },
   headingTitleStyles: {
     color: "#fff",
@@ -28,7 +28,7 @@ const useStyles = makeStyles({
       color: indigo[800]
     }
   }
-});
+}));
 
 const Heading = (props) => {
   const classes = useStyles(props);
@@ -83,7 +83,7 @@ const Heading = (props) => {
           {props.title}
           <Typography>
             {props.subtitle + " "}
-            <Link to={props.path} className={classes.linkStyles}>{props.special}</Link>
+            <Link to={props.path} replace className={classes.linkStyles}>{props.special}</Link>
           </Typography>
         </Typography>
       );

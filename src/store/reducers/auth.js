@@ -7,6 +7,7 @@ const initialState = {
     username: null,
     userImgUrl: null,
     signupDate: null,
+    savedMovies: null,
     redirectPath: "/"
     // error: null,
     // loading: null
@@ -18,7 +19,8 @@ const authSuccess = (state, action) => {
         token: action.token,
         username: action.userData.username,
         userImgUrl: action.userData.imgUrl,
-        signupDate: action.userData.signupDate
+        signupDate: action.userData.signupDate,
+        savedMovies: action.userData.savedMovies
     })
 }
 

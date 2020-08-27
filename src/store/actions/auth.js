@@ -203,3 +203,17 @@ export const updateUserImage = (imgUrl) => {
     url: imgUrl
   }
 }
+
+export const saveMovie = (userId, savedMoviesArray) => {
+  return dispatch => {
+    
+    console.log(userId, savedMoviesArray);
+    axios.put(`https://movies-info-f83aa.firebaseio.com/users/${userId}/savedMovies.json`, savedMoviesArray)
+    .then(res => {
+      console.log(res);
+    })
+    .catch(error => {
+      console.log(error);
+    })
+  }
+}

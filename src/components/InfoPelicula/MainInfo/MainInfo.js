@@ -1,11 +1,14 @@
 import React from "react";
-import { Typography } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import { getLongDate } from "../../../shared/utility";
 
 import BackgroundImg from "../../UI/BackgroundImg/BackgroundImg";
 import Detail from "../../UI/Detail/Detail";
 import Heading from "../../UI/Heading/Heading";
 import Poster from "./Poster/Poster";
+
+import BookmarkBorderRoundedIcon from '@material-ui/icons/BookmarkBorderRounded';
+import BookmarkRoundedIcon from '@material-ui/icons/BookmarkRounded';
 
 import imdbLogo from "../../../assets/imdb_logo.png";
 import classes from "./MainInfo.module.css";
@@ -65,6 +68,17 @@ const MainInfo = (props) => {
           <Detail name="fecha de estreno">{longReleaseDate}</Detail>
           <Detail name="duración">{runtimeString}</Detail>
           <Detail name="género(s)">{generos}</Detail>
+        </div>
+
+        <div>
+          <Button
+            color={(props.isMovieSaved) ? "secondary" : "primary"}
+            startIcon={(props.isMovieSaved) ? <BookmarkRoundedIcon /> : <BookmarkBorderRoundedIcon />}
+            variant="contained"
+            onClick={props.clicked}
+          >
+            {(props.isMovieSaved) ? "Guardado" : "Guardar"}
+          </Button>
         </div>
       </div>
     </div>

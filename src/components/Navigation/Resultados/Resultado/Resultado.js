@@ -58,7 +58,7 @@ const Resultado = (props) => {
 
   return (
     <Link to={`/pelicula/${props.peliculaId}`} style={{textDecoration: "none"}}>
-      <Card className={classes.cardStyles} onClick={props.clicked}>
+      <Card className={classes.cardStyles}>
         <CardMedia
           image={mediaImage}
           title={props.titulo}

@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/styles";
 import Heading from "../../components/UI/Heading/Heading";
 import UserInfo from "../../components/User/UserInfo/UserInfo";
 import { connect } from "react-redux";
+import SavedMovies from "../../components/User/SavedMovies/SavedMovies";
 
 const useStyles = makeStyles({
   boxStyles: {
@@ -30,8 +31,8 @@ const User = (props) => {
       console.log(event.target.files[0]);
       const userData = {
         username,
-        signupDate
-      }
+        signupDate,
+      };
       props.onUploadImage(userData, userImage, userId);
     } else {
       console.log("error al subir");
@@ -39,19 +40,26 @@ const User = (props) => {
   };
 
   return (
-    <Box className={classes.boxStyles}>
-      <Heading type="secondary" align="center">
-        Tu Perfil
-      </Heading>
+    <React.Fragment>
+      <Box className={classes.boxStyles}>
+        <Heading type="secondary" align="center">
+          Tu Perfil
+        </Heading>
 
-      <UserInfo
-        uploadImage={checkFile}
-        username={props.username}
-        signupDate={props.signupDate}
-        userImgUrl={props.userImgUrl}
-        logout={props.onLogout}
-      />
-    </Box>
+        <UserInfo
+          uploadImage={checkFile}
+          username={props.username}
+          signupDate={props.signupDate}
+          userImgUrl={props.userImgUrl}
+          logout={props.onLogout}
+        />
+      </Box>
+
+      <Box>
+        <h3>Peliculas Guardadas</h3>
+        <SavedMovies movies={props.savedMovies} />
+      </Box>
+    </React.Fragment>
   );
 };
 
@@ -62,13 +70,15 @@ const mapStateToProps = (state) => {
     userImgUrl: state.auth.userImgUrl,
     signupDate: state.auth.signupDate,
     userId: state.auth.userId,
+    savedMovies: state.auth.savedMovies
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onUploadImage: (userData, userImage, userId) => dispatch(actions.uploadImage(userData, userImage, userId)),
-    onLogout: () => dispatch(actions.authLogout())
+    onUploadImage: (userData, userImage, userId) =>
+      dispatch(actions.uploadImage(userData, userImage, userId)),
+    onLogout: () => dispatch(actions.authLogout()),
   };
 };
 

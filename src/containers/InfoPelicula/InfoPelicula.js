@@ -32,11 +32,43 @@ const InfoPelicula = (props) => {
     setVideoKey(key);
   };
 
+  let isSaved = false;
+  if(props.savedMovies && props.savedMovies.length > 0) {
+    console.log(props.savedMovies);
+    const savedMovieIndex = props.savedMovies.findIndex(movie => movie.id === +id);
+    console.log(savedMovieIndex);
+    isSaved = savedMovieIndex !== -1;
+  }
+  console.log(isSaved);
+
+  const saveMovieHandler = () => {
+    // TODO: save and unsave the movies & show them in the user info
+    if(props.isAuth) {
+      console.log("guardado");
+      console.log(info);
+      console.log(props.savedMovies);
+      console.log(isSaved);
+      // const movieData = {
+      //   id: info.id,
+      //   title: info.title,
+      //   release: info.release_date,
+      //   posterUrl: info.poster_path,
+      //   score: info.vote_average
+      // }
+      // let savedMoviesArray = [];
+      // savedMoviesArray.push(movieData);
+      // console.log(movieData, savedMoviesArray);
+      // props.onSaveMovie(props.userId, savedMoviesArray);
+    } else {
+      props.history.push(`/signin?movieId=${props.match.params.id}`)
+    }
+  }
+
   let component = <p>Cargando</p>;
   if (info && cast && videos && recommendedMovies) {
     component = (
       <div className={classes.InfoPelicula}>
-        <MainInfo info={info} />
+        <MainInfo info={info} clicked={saveMovieHandler} isMovieSaved={isSaved} />
 
         <div className={classes.Cast}>
           <Heading type="info-tertiary">Reparto:</Heading>
@@ -64,7 +96,7 @@ const InfoPelicula = (props) => {
         </div>
 
         <div className={classes.RecommendedMovies}>
-          <Heading type="info-tertiary">Películas Recomendadas:</Heading>
+          <Heading type="info-tertiary">Recomendados:</Heading>
           <div className={classes.MoviesWrapper}>
             <RecommendedMovies movies={recommendedMovies} />
           </div>
@@ -78,16 +110,20 @@ const InfoPelicula = (props) => {
 
 const mapStateToProps = (state) => {
   return {
+    isAuth: state.auth.token !== null,
     info: state.infoPelicula.info,
     cast: state.infoPelicula.cast,
     videos: state.infoPelicula.videos,
-    recommendedMovies: state.infoPelicula.recommendedMovies
+    recommendedMovies: state.infoPelicula.recommendedMovies,
+    userId: state.auth.userId,
+    savedMovies: state.auth.savedMovies
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
     onFetchMovieInfo: (movieId) => dispatch(actions.fetchMovieInfo(movieId)),
+    onSaveMovie: (userId, savedMoviesArray) => dispatch(actions.saveMovie(userId, savedMoviesArray))
   };
 };
 

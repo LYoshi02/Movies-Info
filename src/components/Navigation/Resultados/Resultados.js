@@ -14,28 +14,6 @@ const useStyles = makeStyles({
 
 const Resultados = (props) => {
   const classes = useStyles();
-  // let results = (props.reqLoading) ? <Loading /> : null;
-  // if(props.results) {
-  //   const movies = props.results.sort((a,b) => b.popularity - a.popularity );
-  //   if(props.results.length > 0) {
-  //     results = movies.map((movie) => (
-  //       <Resultado
-  //         key={movie.id}
-  //         titulo={movie.title}
-  //         posterUrl={movie.poster_path}
-  //         peliculaId={movie.id}
-  //         releaseDate={movie.release_date}
-  //         score={movie.vote_average}
-  //       />
-  //     ));
-  //   } else if(!props.reqLoading) {
-  //     results = (
-  //       <Box p="1rem" textAlign="center">
-  //         <p>No se encontraron resultados para <b>{props.searchValue}</b></p>
-  //       </Box>
-  //     )
-  //   }
-  // }
 
   let results = null;
   if(props.reqLoading) {
@@ -52,7 +30,6 @@ const Resultados = (props) => {
             peliculaId={movie.id}
             releaseDate={movie.release_date}
             score={movie.vote_average}
-            clicked={props.movieClicked}
           />
         ));
       } else {
