@@ -206,14 +206,36 @@ export const updateUserImage = (imgUrl) => {
 
 export const saveMovie = (userId, savedMoviesArray) => {
   return dispatch => {
-    
+    dispatch(saveMovieInit());
     console.log(userId, savedMoviesArray);
     axios.put(`https://movies-info-f83aa.firebaseio.com/users/${userId}/savedMovies.json`, savedMoviesArray)
     .then(res => {
       console.log(res);
+      dispatch(saveMovieSuccess(res.data));
     })
     .catch(error => {
       console.log(error);
+      dispatch(saveMovieError(error));
     })
+  }
+}
+
+export const saveMovieInit = () => {
+  return {
+    type: actionTypes.SAVE_MOVIE_INIT
+  }
+}
+
+export const saveMovieSuccess = (savedMovies) => {
+  return {
+    type: actionTypes.SAVE_MOVIE_SUCCESS,
+    savedMovies
+  }
+}
+
+export const saveMovieError = (error) => {
+  return {
+    type: actionTypes.SAVE_MOVIE_ERROR,
+    error
   }
 }
