@@ -9,12 +9,18 @@ import { connect } from "react-redux";
 import SavedMovies from "../../components/User/SavedMovies/SavedMovies";
 
 const useStyles = makeStyles({
-  boxStyles: {
-    backgroundColor: "#eee",
-    padding: "4rem 2rem",
+  mainBoxStyles: {
     margin: "2rem",
-    borderRadius: "5px",
   },
+  userInfoBoxStyles: {
+    backgroundColor: "#eee",
+    borderRadius: "5px",
+    padding: "4rem 2rem",
+    marginBottom: "5rem"
+  },
+  savedMoviesBoxStyles: {
+
+  }
 });
 
 const User = (props) => {
@@ -40,8 +46,8 @@ const User = (props) => {
   };
 
   return (
-    <React.Fragment>
-      <Box className={classes.boxStyles}>
+    <Box className={classes.mainBoxStyles}>
+      <Box className={classes.userInfoBoxStyles}>
         <Heading type="secondary" align="center">
           Tu Perfil
         </Heading>
@@ -56,10 +62,10 @@ const User = (props) => {
       </Box>
 
       <Box>
-        <h3>Peliculas Guardadas</h3>
+        <Heading type="secondary" color="textPrimary">Peliculas Guardadas</Heading>
         <SavedMovies movies={props.savedMovies} />
       </Box>
-    </React.Fragment>
+    </Box>
   );
 };
 

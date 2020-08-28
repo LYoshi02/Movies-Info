@@ -4,8 +4,7 @@ import Resultado from "../../Navigation/Resultados/Resultado/Resultado";
 const SavedMovies = (props) => {
   let movies = null;
   if (props.movies) {
-      console.log(props.movies)
-    movies = props.movies.map((movie) => (
+    movies = props.movies.reverse().map((movie) => (
       <Resultado
         key={movie.id}
         titulo={movie.title}
@@ -18,7 +17,6 @@ const SavedMovies = (props) => {
   }
   return (
     <div>
-      <p>Hello</p>
       {movies}
     </div>
   );
