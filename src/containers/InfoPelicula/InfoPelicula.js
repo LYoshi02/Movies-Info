@@ -43,12 +43,7 @@ const InfoPelicula = (props) => {
   }
 
   const saveMovieHandler = () => {
-    // TODO: save and unsave the movies & show them in the user info
     if (props.isAuth) {
-      console.log("guardado");
-      console.log(info);
-      console.log(props.savedMovies);
-      console.log(isSaved);
       const movieData = {
         id: info.id,
         title: info.title,
@@ -62,10 +57,13 @@ const InfoPelicula = (props) => {
       } else {
         savedMoviesArray.push(movieData);
       }
-      console.log(savedMoviesArray);
       props.onSaveMovie(props.userId, savedMoviesArray);
     } else {
-      props.history.push(`/signin?movieId=${props.match.params.id}`);
+      props.history.push({
+        pathname: "/signin",
+        search: "?redirect",
+        state: { prevPath: `/pelicula/${id}`}
+      });
     }
   };
 

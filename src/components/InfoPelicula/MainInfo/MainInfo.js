@@ -1,7 +1,11 @@
 import React from "react";
-import { Typography, Button } from "@material-ui/core";
+import {
+  Typography,
+  Button
+} from "@material-ui/core";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { getLongDate } from "../../../shared/utility";
+import { RedButtonTheme } from "../../../shared/MuiThemes";
 
 import BackgroundImg from "../../UI/BackgroundImg/BackgroundImg";
 import Detail from "../../UI/Detail/Detail";
@@ -10,6 +14,7 @@ import Poster from "./Poster/Poster";
 
 import BookmarkBorderRoundedIcon from "@material-ui/icons/BookmarkBorderRounded";
 import BookmarkRoundedIcon from "@material-ui/icons/BookmarkRounded";
+import ErrorOutlineRoundedIcon from "@material-ui/icons/ErrorOutlineRounded";
 
 import imdbLogo from "../../../assets/imdb_logo.png";
 import classes from "./MainInfo.module.css";
@@ -61,7 +66,17 @@ const MainInfo = (props) => {
     </Button>
   );
   if (!props.reqSavedLoading) {
-    saveMovieButton = (
+    saveMovieButton = props.reqSavedError ? (
+      <RedButtonTheme>
+        <Button
+          color={"primary"}
+          startIcon={<ErrorOutlineRoundedIcon />}
+          variant="contained"
+        >
+          Error
+        </Button>
+      </RedButtonTheme>
+    ) : (
       <Button
         color={props.isMovieSaved ? "secondary" : "primary"}
         startIcon={
@@ -77,9 +92,6 @@ const MainInfo = (props) => {
         {props.isMovieSaved ? "Guardado" : "Guardar"}
       </Button>
     );
-  }
-  if(props.reqSavedError) {
-    // TODO: continue here
   }
 
   return (

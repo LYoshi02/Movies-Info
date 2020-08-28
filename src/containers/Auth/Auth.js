@@ -70,17 +70,17 @@ const Auth = (props) => {
     },
   })
 
-  const { pathname, search } = props.location;
+  const { pathname, search, state } = props.location;
   const { onSetAuthRedirectPath } = props;
   useEffect(() => {
     let redirectPath = "/";
     const urlParams = new URLSearchParams(search);
-    const movieId = urlParams.get("movieId")
-    if(movieId) {
-      redirectPath = `/pelicula/reviews/${movieId}`;
+    const redirect = urlParams.get("redirect");
+    if(redirect === "") {
+      redirectPath = state.prevPath;
     }
     onSetAuthRedirectPath(redirectPath);
-  }, [search, onSetAuthRedirectPath]);
+  }, [search, state, onSetAuthRedirectPath]);
 
   useEffect(() => {
     setIsSignIn(pathname === "/signin");

@@ -1,9 +1,9 @@
 import React from "react";
-import { Box, Button, createMuiTheme } from "@material-ui/core";
-import { makeStyles, ThemeProvider } from "@material-ui/styles";
-import { red } from "@material-ui/core/colors";
+import { Box, Button } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 import { getLongDate } from "../../../shared/utility";
+import { RedButtonTheme } from "../../../shared/MuiThemes";
 import Detail from "../../UI/Detail/Detail";
 import UserImg from "../UserImg/UserImg";
 
@@ -29,13 +29,6 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const redTheme = createMuiTheme({
-  palette: { primary: red },
-  typography: {
-    htmlFontSize: 10,
-  },
-});
-
 const UserInfo = (props) => {
   const classes = useStyles();
 
@@ -52,7 +45,7 @@ const UserInfo = (props) => {
             {getLongDate(props.signupDate)}
           </Detail>
         </Box>
-        <ThemeProvider theme={redTheme}>
+        <RedButtonTheme>
           <Button
             variant="contained"
             onClick={props.logout}
@@ -60,7 +53,7 @@ const UserInfo = (props) => {
           >
             Cerrar Sesión
           </Button>
-        </ThemeProvider>
+        </RedButtonTheme>
       </Box>
     </Box>
   );

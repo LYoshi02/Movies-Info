@@ -74,7 +74,11 @@ const MovieReviews = (props) => {
         props.onPostReview(props.match.params.id, userReview, props.token);
       }
     } else {
-      props.history.push(`/signin?movieId=${props.match.params.id}`);
+      props.history.push({
+        pathname: "/signin",
+        search: "?redirect",
+        state: { prevPath: `/pelicula/reviews/${id}`}
+      });
     }
   };
 

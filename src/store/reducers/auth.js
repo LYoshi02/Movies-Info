@@ -11,8 +11,6 @@ const initialState = {
   reqSavedMoviesLoading: false,
   reqSavedMoviesError: null,
   redirectPath: "/",
-  // error: null,
-  // loading: null
 };
 
 const authSuccess = (state, action) => {
@@ -33,6 +31,9 @@ const authLogout = (state, action) => {
     username: null,
     userImgUrl: null,
     signupDate: null,
+    savedMovies: null,
+    reqSavedMoviesLoading: false,
+    reqSavedMoviesError: null,
     redirectPath: "/",
   });
 };
