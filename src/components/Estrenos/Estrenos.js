@@ -7,7 +7,7 @@ import Carousel from "./Carousel/Carousel";
 import Heading from "../UI/Heading/Heading";
 import Pelicula from "../Peliculas/Pelicula/Pelicula";
 
-import estrenosBg from "../../assets/krists-luhaers-AtPWnYNDJnM-unsplash.jpg";
+import estrenosBg from "../../assets/cinema.jpg";
 
 const useStyles = makeStyles({
   estrenosStyles: {
