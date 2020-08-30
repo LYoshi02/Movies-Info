@@ -30,6 +30,7 @@ const Resultados = (props) => {
             peliculaId={movie.id}
             releaseDate={movie.release_date}
             score={movie.vote_average}
+            clicked={props.movieClicked}
           />
         ));
       } else {

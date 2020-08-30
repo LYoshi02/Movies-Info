@@ -1,15 +1,30 @@
 import React from 'react';
-import pageLogo from "../../assets/PageLogo.png";
+import { makeStyles } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-import classes from "./Logo.module.css";
+import pageLogo from "../../assets/PageLogo.png";
 
-const logo = props => (
-    <div className={classes.Logo}>
-        <Link to="/">
-            <img alt="Page Logo" src={pageLogo} />
-        </Link>
-    </div>
-);
+const useStyles = makeStyles({
+    logoStyles: {
+        height: "5rem",
+        flex: "1"
+    },
+    logoImageStyles: {
+        display: "inline-block",
+        height: "5rem"
+    }
+});
 
-export default logo;
+const Logo = props => {
+    const classes = useStyles();
+    
+    return(
+        <div className={classes.logoStyles}>
+            <Link to="/">
+                <img alt="Page Logo" src={pageLogo} className={classes.logoImageStyles} />
+            </Link>
+        </div>
+    );
+}
+
+export default Logo;

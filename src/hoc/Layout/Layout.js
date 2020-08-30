@@ -50,6 +50,7 @@ const Layout = (props) => {
       setSearchInputValue("");
       onRestartSearchValues();
     }
+    console.log(showSearchBar)
   };
 
   const searchInputHandler = (event) => {

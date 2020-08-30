@@ -17,9 +17,6 @@ const useStyles = makeStyles({
     borderRadius: "5px",
     padding: "4rem 2rem",
     marginBottom: "5rem"
-  },
-  savedMoviesBoxStyles: {
-
   }
 });
 

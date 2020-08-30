@@ -1,12 +1,29 @@
 import React from "react";
+import { makeStyles } from "@material-ui/core";
+
 import Actor from "./Actor/Actor";
 
-import classes from "./Casting.module.css";
+const useStyles = makeStyles({
+  castingStyles: {
+    overflow: "hidden",
+  },
+  castingListStyles: {
+    overflow: "auto",
+    listStyle: "none",
+    display: "flex",
+    "& li": {
+      margin: "1rem .5rem",
+      minWidth: "18rem"
+    }
+  }
+});
 
 const Casting = (props) => {
+  const classes = useStyles();
+
   return (
-    <div className={classes.Casting}>
-      <ul className={classes.CastingList}>
+    <div className={classes.castingStyles}>
+      <ul className={classes.castingListStyles}>
         {props.cast.map((actor) => (
           <Actor
             key={actor.id}

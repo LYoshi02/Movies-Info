@@ -1,5 +1,6 @@
 import React from "react";
 import { Grid } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 import BackgroundImg from "../UI/BackgroundImg/BackgroundImg";
 import Carousel from "./Carousel/Carousel";
@@ -7,9 +8,17 @@ import Heading from "../UI/Heading/Heading";
 import Pelicula from "../Peliculas/Pelicula/Pelicula";
 
 import estrenosBg from "../../assets/krists-luhaers-AtPWnYNDJnM-unsplash.jpg";
-import classes from "./Estrenos.module.css";
+
+const useStyles = makeStyles({
+  estrenosStyles: {
+    position: "relative",
+    padding: "4rem 0",
+    overflow: "hidden"
+  }
+});
 
 const Estrenos = (props) => {
+  const classes = useStyles();
   let lista_estrenos = <p>Cargando</p>;
   if (props.estrenos) {
     const estrenos = props.estrenos.slice(0,8);
@@ -29,7 +38,7 @@ const Estrenos = (props) => {
   }
 
   return (
-    <div className={classes.Estrenos}>
+    <div className={classes.estrenosStyles}>
       <Grid container>
         <Grid item xs={1} />
         <Grid item xs={10}>
