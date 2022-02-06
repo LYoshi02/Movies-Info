@@ -13,8 +13,8 @@ import User from "./containers/User/User";
 function App(props) {
   const { onCheckAuthState } = props;
   let userRoute = null;
-  if(props.isAuth) {
-    userRoute = <Route path="/profile" component={User} />
+  if (props.isAuth) {
+    userRoute = <Route path="/profile" component={User} />;
   } else {
     userRoute = <Route exact path={["/signin", "/signup"]} component={Auth} />;
   }
@@ -22,7 +22,7 @@ function App(props) {
   useEffect(() => {
     onCheckAuthState();
   }, [onCheckAuthState]);
-  
+
   return (
     <BrowserRouter>
       <Layout>
@@ -42,14 +42,14 @@ function App(props) {
 const mapStateToProps = (state) => {
   return {
     isAuth: state.auth.token !== null,
-    redirectPath: state.auth.redirectPath
-  }
-}
+    redirectPath: state.auth.redirectPath,
+  };
+};
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onCheckAuthState: () => dispatch(actions.checkAuthState())
-  }
-}
+    onCheckAuthState: () => dispatch(actions.checkAuthState()),
+  };
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
